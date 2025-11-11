@@ -1,5 +1,5 @@
 # Consonant-Cluster-Analysis
-Analysis of consonant clusters in Polish language and comparison with English. It is known that one of the most difficult parts of the Polish language for learners is the lack of vowels, and pronunciation may be difficult for many. In this project, I will investigate the differences in languages in building consonant clusters, to find which combinations of sounds are most unnatural to English speakers, and are worth practicing early. P
+Analysis of consonant clusters in Polish language and comparison with English. It is known that one of the most difficult parts of the Polish language for learners is the lack of vowels, and pronunciation may be difficult for many. In this project, I will investigate the differences in languages in building consonant clusters, to find which combinations of sounds are most unnatural to English speakers, and are worth practicing early. 
 
 This project uses material licensed under CC BY-NC-SA 4.0. It is shared for educational and personal portfolio purposes only.
 
