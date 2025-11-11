@@ -5,7 +5,7 @@ import csv
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
 consts = ['b','c','ć','d','f','g','h','j','k','l','ł','m','n','ń','p','q','r','s','ś','t','v','w','x','z','ź','ż'] 
-#TODO - adjust for special cases like ci/si, (vowel)-j, etc.
+#TODO - adjust for special cases like digraphs, (vowel)-j, etc.
 
 #remove spaces, allowing for clusters across words, then apply translation
 def remove_spaces(s):
@@ -34,5 +34,3 @@ with open('clusters.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
     for i in clusters.items():
         writer.writerow(i)
-#export to csv
-#fix so numbers and other chars are not included
