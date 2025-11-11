@@ -29,6 +29,8 @@ for i in sentences:
                 clusters.update({word:1})
             else: #increase counter
                 clusters[word] += 1
+        if len(word) > 5:
+            print(word)
 
 with open('clusters.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
