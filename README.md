@@ -7,3 +7,6 @@ Credits:
 
 Alina Wróblewska, 2018. *Extended and Enhanced Polish Dependency Bank in Universal Dependencies Format.* 
 In de Marneffe, Marie-Catherine and Lynn, Teresa and Schuster, Sebastian (Ed.) *Proceedings of the Second Workshop on Universal Dependencies (UDW 2018)* (pp. 173-182). Association for Computational Linguistics
+
+
+TODO: fix parsing to remove acronyms, work on digraphs to make sensible solution, maybe fix so that each cluster also includes its subsets (eg sprz also includes instances of prz)
