@@ -3,7 +3,7 @@ Analysis of consonant clusters in Polish language and comparison with English. I
 
 This project uses material licensed under CC BY-NC-SA 4.0. It is shared for educational and personal portfolio purposes only.
 
-Analizy zbitek spółgłoskowych w języku polskim, z celem zrozumienia różnicy pomiędzy dźwiękami polskimi i angielskimi. Wiadomo, że jedną z najtrudniejszych części języka polskiego dla ludzi, którzy jego się uczą, to że brakuje językowi dużo samogłosek, i wymówa polskich słów może być trudna. W tym projektu, próbuję znaleźć, które dźwięki najwięcej różną języki polski i angielski, i w tym sposobie znaleźć, których dźwięków warto wcześniej ćwiczyć.
+Analizy zbitek spółgłoskowych w języku polskim, z celem zrozumienia różnicy pomiędzy dźwiękami polskimi i angielskimi. Wiadomo, że jedną z najtrudniejszych części języka polskiego dla ludzi, którzy jego się uczą, to że brakuje językowi dużo samogłosek, i wymówa polskich słów może być trudna. W tym projekcie, próbuję znaleźć, które dźwięki najwięcej różną języki polski i angielski, i w tym sposobie znaleźć, których dźwięków warto wcześniej ćwiczyć.
 
 Ten projekt korzysta z materiału, licencjonowany przez CC BY-NC-SA 4.0. Jest tylko używany z celami edukacyjnymi.
 
