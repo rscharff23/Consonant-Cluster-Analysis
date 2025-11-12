@@ -59,7 +59,7 @@ def process_sentence(chars):
 #parse file to sentences
 data_file = open("pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
-    sentences.append(tokenlist.metadata.get('text').lower()) #convert conllu to normal (LC) sentences
+    sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
 #write sentences to text file for easier reading
 with open ('sentences.txt', 'w', encoding="utf-8-sig") as txt:
@@ -68,7 +68,7 @@ with open ('sentences.txt', 'w', encoding="utf-8-sig") as txt:
 
 #find clusters and write to db (dict)
 for i in sentences:
-    chars = combine_digraphs(i)
+    chars = combine_digraphs(i.lower())#make lowercase each sentence
 
     remove_spaces(chars)
 
