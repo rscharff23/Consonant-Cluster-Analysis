@@ -4,33 +4,71 @@ import csv
 
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
-consts = ['b','c','ć','d','f','g','h','j','k','l','ł','m','n','ń','p','q','r','s','ś','t','v','w','x','z','ź','ż'] 
+consts = ['b','c','ć','d','f','g','h','j','k','l','ł','m','n','ń','p','q','r','s','ś','t','v','w','x','z','ź','ż', ' '] 
+digraphs = ['cz','sz','rz','dż','dź','dz','ch']
 #TODO - adjust for special cases like digraphs, (vowel)-j, etc.
 
-#remove spaces, allowing for clusters across words, then apply translation
-def remove_spaces(s):
-    s = s.replace(" ","")
-    return "".join(ch if ch in consts else " " for ch in s)#remove all chars except consonants
+#remove spaces, allowing for clusters across words
+def remove_spaces(chars):
+    while 1<2: #go until we get value error from no more spaces
+        try:
+            chars.remove(' ')
+        except (ValueError):
+            break
+
+#remove vowels to isolate clusters
+def remove_vowels(chars):
+    for i in range(len(chars)):
+        if chars[i] not in (consts + digraphs):
+            chars[i] = ' '#set vowels and other chars to spaces, keeping clusters separate
+
+#combine digraphs (rz,cz,sz,dż,dź,ch) to one character, to count sounds better
+def combine_digraphs(s):
+    chars = list(s) #array of characters
+    i = 0
+    while i < len(chars)-1:
+        if chars[i] + chars[i+1] in digraphs: #check if next two letters are a digraph
+            chars[i] = chars[i]+chars[i+1] #if so, combine them into one
+            chars.pop(i+1) #and remove next
+        i += 1
+    return(chars)
+
+#the following approach adds all clusters of size >=2 to the db, and within each cluster
+#includes any subclusters of sufficient size; eg. adds not only ftb but also ft and fb
+def process_sentence(chars):
+    chars.append(' ') #prevents index out of boundsing
+    for i in range(len(chars)-1):
+        if chars[i] != ' ': #starting at each consonant
+            count = 1 #cluster must have at least 2 sounds
+            while chars[i+count] != ' ': #until we find a vowel/other symbol
+                cl = ''
+                for j in range(i,i+count+1):
+                    cl += chars[j] #finally add chars back together
+                if cl not in clusters.keys(): #add new entry to dict
+                    clusters.update({cl:1})
+                else: #increase cluster counter
+                    clusters[cl] += 1
+                count += 1
 
 #parse file to sentences
 data_file = open("pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
     sentences.append(tokenlist.metadata.get('text').lower()) #convert conllu to normal (LC) sentences
 
+#write sentences to text file for easier reading
 with open ('sentences.txt', 'w', encoding="utf-8-sig") as txt:
     for i in sentences:
         txt.write(i + "\n")
 
+#find clusters and write to db (dict)
 for i in sentences:
-    remvd = remove_spaces(i) 
-    for word in remvd.split():
-        if len(word) > 1:#not a cluster otherwise
-            if word not in clusters.keys(): #add new entry to dict
-                clusters.update({word:1})
-            else: #increase counter
-                clusters[word] += 1
-        if len(word) > 5:
-            print(word)
+    chars = combine_digraphs(i)
+
+    remove_spaces(chars)
+
+    remove_vowels(chars)
+
+    process_sentence(chars) 
 
 with open('clusters.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
