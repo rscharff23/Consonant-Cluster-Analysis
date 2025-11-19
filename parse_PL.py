@@ -63,7 +63,7 @@ for tokenlist in parse_incr(data_file):
     sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
 #write sentences to text file for easier reading
-with open ('sentences.txt', 'w', encoding="utf-8-sig") as txt:
+with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
     for i in sentences:
         txt.write(i + "\n")
 
