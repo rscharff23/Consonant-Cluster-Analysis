@@ -6,7 +6,6 @@ sentences = [] #contains full sentences after parsing
 clusters = {} #dict to contain each cluster and their number of occurences
 consts = ['b','c','ć','d','f','g','h','j','k','l','ł','m','n','ń','p','q','r','s','ś','t','v','w','x','z','ź','ż', ' '] 
 digraphs = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi']
-#TODO - adjust for special cases like digraphs, (vowel)-j, etc.
 
 #remove spaces, allowing for clusters across words
 def remove_spaces(chars):
@@ -57,7 +56,7 @@ def process_sentence(chars):
                 count += 1 #check next char
 
 #parse file to sentences
-data_file = open("data/pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
+data_file = open("data/pl_pdb-ud-train.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
     sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
