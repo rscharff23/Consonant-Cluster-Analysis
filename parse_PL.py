@@ -58,7 +58,7 @@ def process_sentence(chars):
                 count += 1 #check next char
 
 #parse file to sentences
-data_file = open("data_pl/pl_pdb-ud-train.conllu", "r", encoding="utf-8")
+data_file = open("data_pl/pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
     sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
