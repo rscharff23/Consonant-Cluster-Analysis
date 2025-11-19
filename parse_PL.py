@@ -5,24 +5,11 @@ import csv
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
 consts = ['b','c','ć','d','f','g','h','j','k','l','ł','m','n','ń','p','q','r','s','ś','t','v','w','x','z','ź','ż', ' '] 
-digraphs = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi']
-
-#remove spaces, allowing for clusters across words
-def remove_spaces(chars):
-    while 1<2: #go until we get value error from no more spaces
-        try:
-            chars.remove(' ')
-        except (ValueError):
-            break
-
-#remove vowels to isolate clusters
-def remove_vowels(chars):
-    for i in range(len(chars)):
-        if chars[i] not in (consts + digraphs):
-            chars[i] = ' '#set vowels and other chars to spaces, keeping clusters separate
+di_pl = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi']
+#replace above arrays with one ipa list soon
 
 #combine digraphs (rz,cz,sz,dż,dź,ch) to one character, to count sounds better
-def combine_digraphs(s):
+def combine_digraphs(s,digraphs):
     chars = list(s) #array of characters
     chars.append('.') #fixes bounding problem of some sentences not ending with period
     i = 0
@@ -36,6 +23,21 @@ def combine_digraphs(s):
             chars.pop(i+1) #and remove next
         i += 1
     return(chars)
+
+#remove spaces (or other dividing chars), allowing for clusters across words
+def remove_chars(chars, rem):
+    for i in rem: #allow for multiple chars to be removed from string
+        while 1<2: #go until we get value error from no more spaces
+            try:
+                chars.remove(i)
+            except (ValueError):
+                break
+
+#remove vowels to isolate clusters
+def remove_vowels(chars, cons):
+    for i in range(len(chars)):
+        if chars[i] not in (cons):
+            chars[i] = ' '#set vowels and other chars to spaces, keeping clusters separate
 
 #the following approach adds all clusters of size >= char_min to the db, and within each cluster
 #includes any subclusters of sufficient size; eg. adds not only ftb but also ft and fb
@@ -56,7 +58,7 @@ def process_sentence(chars):
                 count += 1 #check next char
 
 #parse file to sentences
-data_file = open("data/pl_pdb-ud-train.conllu", "r", encoding="utf-8")
+data_file = open("data_pl/pl_pdb-ud-train.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
     sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
@@ -67,15 +69,17 @@ with open ('sentences.txt', 'w', encoding="utf-8-sig") as txt:
 
 #find clusters and write to db (dict)
 for i in sentences:
-    chars = combine_digraphs(i.lower())#make lowercase each sentence
+    chars = combine_digraphs(i.lower(), di_pl)#make lowercase each sentence
 
-    remove_spaces(chars)
+    #TODO here - write function that turns letters into ipa
 
-    remove_vowels(chars)
+    remove_chars(chars, [' '])
+
+    remove_vowels(chars, consts + di_pl) #update this to be ipa chars once that is changed
 
     process_sentence(chars) 
 
-with open('clusters.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
+with open('clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
     for i in clusters.items():
         writer.writerow(i)
