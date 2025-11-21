@@ -4,13 +4,24 @@ import csv
 
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
-consts = ['b','c','ć','d','f','g','h','j','k','l','ł','m','n','ń','p','q','r','s','ś','t','v','w','x','z','ź','ż', ' '] 
-di_pl = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi']
-#replace above arrays with one ipa list soon
+
+consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','ɲ','p','r','s','ɕ','ʂ','t','v','w','z',
+          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x'] #ipa consonants present in polish
+di_pl = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi'] #polish digraphs
+
+#read in dict with pl -> ipa matchings
+pl_ipa_dict = {}
+with open('data_pl/pl_ipa_pairs.csv', 'r', encoding="utf-8-sig") as ipa:
+    wr = csv.DictReader(ipa)
+    for row in wr:
+        pl_ipa_dict[row['pl']] = row['ipa']
+
+
+
+### FUNCTIONS
 
 #combine digraphs (rz,cz,sz,dż,dź,ch) to one character, to count sounds better
-def combine_digraphs(s,digraphs):
-    chars = list(s) #array of characters
+def combine_digraphs(chars,digraphs):
     chars.append('.') #fixes bounding problem of some sentences not ending with period
     i = 0
     while i < len(chars)-1:
@@ -22,7 +33,17 @@ def combine_digraphs(s,digraphs):
                 chars[i] = chars[i]+chars[i+1] #if so, combine them into one
             chars.pop(i+1) #and remove next
         i += 1
-    return(chars)
+
+#turns polish (consonant) chars individually into ipa equivalent, resulting sentence is NOT ipa equivalent
+#due to voicing and other small quirks which are fixed in a separate function
+def pl_to_ipa(chars):
+    count = 0
+    while count < len(chars):#go through each char
+        if chars[count] in pl_ipa_dict.keys(): #if is changed in ipa
+            if chars[count].endswith('i'): #if is ci,si,dzi,zi, insert i afterwards
+                chars.insert(count+1,'i')
+            chars[count] = pl_ipa_dict.get(chars[count]) #replace with ipa equivalent
+        count += 1
 
 #remove spaces (or other dividing chars), allowing for clusters across words
 def remove_chars(chars, rem):
@@ -57,6 +78,10 @@ def process_sentence(chars):
                         clusters[cl] += 1
                 count += 1 #check next char
 
+
+
+### PROCESSING
+
 #parse file to sentences
 data_file = open("data_pl/pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
@@ -69,16 +94,19 @@ with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
 
 #find clusters and write to db (dict)
 for i in sentences:
-    chars = combine_digraphs(i.lower(), di_pl)#make lowercase each sentence
+    chars = list(i.lower()) #make each sentence into a list of lowercase characters
 
-    #TODO here - write function that turns letters into ipa
+    combine_digraphs(chars, di_pl) #combine polish digraphs into one entry
 
-    remove_chars(chars, [' '])
+    pl_to_ipa(chars) #convert polish to ipa for easier comparison
 
-    remove_vowels(chars, consts + di_pl) #update this to be ipa chars once that is changed
+    remove_chars(chars, [' ']) #remove spaces to allow clustering between words
 
-    process_sentence(chars) 
+    remove_vowels(chars, consts) #remove vowels to create clusters
 
+    process_sentence(chars) #write to dict
+
+#write dict to csv
 with open('clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
     for i in clusters.items():

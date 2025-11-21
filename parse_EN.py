@@ -2,14 +2,15 @@ import pandas as pd
 from parse_PL import combine_digraphs,remove_chars,remove_vowels
 import csv
 
-ipa_consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','p','r','s','ʃ','t','v','w','z','θ','ð','ts','dz','dʒ','tʃ']
+ipa_consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','p','r','s','ʃ','t','v','w','z','θ','ð','ts','dz','dʒ','tʃ','ʒ']
 di_ipa = ['ts','dz','dʒ','tʃ'] #ipa sounds represented by two characters
 
 df = pd.read_csv('data_en/sentences_en.csv')
 
 clusters = {}#dict to hold clusters
 for s in df['phonemes']:
-    chars = combine_digraphs(s, di_ipa) #turn ipa sentences into list of ipa chars
+    chars = list(s)
+    combine_digraphs(chars, di_ipa) #turn ipa sentences into list of ipa chars
     remove_chars(chars, [' ','ˈ'])
     remove_vowels(chars, ipa_consts)
     
