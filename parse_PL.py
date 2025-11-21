@@ -85,7 +85,9 @@ def process_sentence(chars):
 #parse file to sentences
 data_file = open("data_pl/pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
-    sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
+    #remove any sentences with abbreviations; cannot be accurately transcribed
+    if not any(token.get('feats') and token.get('feats').get('Abbr') == 'Yes' for token in tokenlist):
+        sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
 #write sentences to text file for easier reading
 with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:

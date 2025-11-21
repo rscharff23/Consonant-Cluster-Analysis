@@ -1,2 +1,1 @@
-abbreviations (search Abbr=Yes):
 acronyms (search using test file)
