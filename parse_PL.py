@@ -87,7 +87,9 @@ data_file = open("data_pl/pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
     #remove any sentences with abbreviations; cannot be accurately transcribed
     if not any(token.get('feats') and token.get('feats').get('Abbr') == 'Yes' for token in tokenlist):
-        sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
+        #remove acronyms; they are not pronounced
+        if not any(str(token).isupper() and len(str(token)) > 1 for token in tokenlist):
+            sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
 #write sentences to text file for easier reading
 with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
@@ -111,5 +113,6 @@ for i in sentences:
 #write dict to csv
 with open('clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
+    writer.writerow(['cluster','occurences'])
     for i in clusters.items():
         writer.writerow(i)
