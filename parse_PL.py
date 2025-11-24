@@ -1,49 +1,17 @@
 from conllu import parse_incr
 from io import open
 import csv
+import convert_ipa.pl_to_ipa as ipa
 
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
 
 consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','ɲ','p','r','s','ɕ','ʂ','t','v','w','z',
           't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x'] #ipa consonants present in polish
-di_pl = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi'] #polish digraphs
-
-#read in dict with pl -> ipa matchings
-pl_ipa_dict = {}
-with open('data_pl/pl_ipa_pairs.csv', 'r', encoding="utf-8-sig") as ipa:
-    wr = csv.DictReader(ipa)
-    for row in wr:
-        pl_ipa_dict[row['pl']] = row['ipa']
 
 
 
 ### FUNCTIONS
-
-#combine digraphs (rz,cz,sz,dż,dź,ch) to one character, to count sounds better
-def combine_digraphs(chars,digraphs):
-    chars.append('.') #fixes bounding problem of some sentences not ending with period
-    i = 0
-    while i < len(chars)-1:
-        if chars[i] + chars[i+1] in digraphs: #check if next two letters are a digraph
-            if chars[i+1] + chars[i+2] == 'zi':
-                chars[i] = 'dzi' #special case for dzi
-                chars.pop(i+2)#and remove i
-            else:           
-                chars[i] = chars[i]+chars[i+1] #if so, combine them into one
-            chars.pop(i+1) #and remove next
-        i += 1
-
-#turns polish (consonant) chars individually into ipa equivalent, resulting sentence is NOT ipa equivalent
-#due to voicing and other small quirks which are fixed in a separate function
-def pl_to_ipa(chars):
-    count = 0
-    while count < len(chars):#go through each char
-        if chars[count] in pl_ipa_dict.keys(): #if is changed in ipa
-            if chars[count].endswith('i'): #if is ci,si,dzi,zi, insert i afterwards
-                chars.insert(count+1,'i')
-            chars[count] = pl_ipa_dict.get(chars[count]) #replace with ipa equivalent
-        count += 1
 
 #remove spaces (or other dividing chars), allowing for clusters across words
 def remove_chars(chars, rem):
@@ -100,9 +68,7 @@ with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
 for i in sentences:
     chars = list(i.lower()) #make each sentence into a list of lowercase characters
 
-    combine_digraphs(chars, di_pl) #combine polish digraphs into one entry
-
-    pl_to_ipa(chars) #convert polish to ipa for easier comparison
+    ipa.convert(chars) #convert polish to ipa for easier comparison
 
     remove_chars(chars, [' ']) #remove spaces to allow clustering between words
 
