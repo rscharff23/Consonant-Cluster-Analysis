@@ -1,6 +1,7 @@
 import csv
 
-di_pl = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi'] #polish digraphs
+di_pl = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi'] #polish 
+vw_pl = ['a','ą','e','ę','i','o','ó','u','y']
 
 #read in dict with pl -> ipa matchings
 pl_ipa_dict = {}
@@ -32,11 +33,25 @@ def convert(chars):
     count = 0
     while count < len(chars):#go through each char
         if chars[count] in pl_ipa_dict.keys(): #if is changed 1:1 in ipa
-            if chars[count].endswith('i'): #if is ci,si,dzi,zi, insert i afterwards
-                chars.insert(count+1,'i')
-            chars[count] = pl_ipa_dict.get(chars[count]) #replace with ipa equivalent
-        # elif chars[count] == 'ą':#phonetic sound depends on next character
-        #     chars[count] == 'ɔ'
-        #     if chars[count + 1] in ['k','g']:
-        #         chars.insert(count+1,'ŋ')
+            if chars[count].endswith('i') and chars[count + 1] not in (vw_pl): 
+                chars.insert(count+1,'i') #if is ci,si,dzi,zi and no other vowel, insert i afterwards
+            chars[count] = pl_ipa_dict.get(chars[count], chars[count]) #replace with ipa equivalent
+        elif chars[count] == 'ą':#phonetic sound depends on next character
+            chars[count] = 'ɔ'
+            match (chars[count + 1]) :
+                case 'k'|'g' :
+                    chars.insert(count+1,'ŋ')
+                case 't'|'d'|'c'|'dz'|'cz'|'dż':
+                    chars.insert(count+1,'n')
+                case 'p'|'b':
+                    chars.insert(count+1,'m')
+                case 'ś'|'ź'|'ć'|'dź'|'si'|'zi'|'ci'|'dzi':
+                    chars.insert(count+1,'ɲ')
+                case 'l'|'ł':
+                    continue
+                case _:
+                    chars[count] = 'ɔw̃'
+            
         count += 1
+    
+    chars.pop() #remove added final char

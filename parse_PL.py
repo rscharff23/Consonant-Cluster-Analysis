@@ -65,16 +65,19 @@ with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
         txt.write(i + "\n")
 
 #find clusters and write to db (dict)
-for i in sentences:
-    chars = list(i.lower()) #make each sentence into a list of lowercase characters
+with open ('data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") as wtr:
+    for i in sentences:
+        chars = list(i.lower()) #make each sentence into a list of lowercase characters
 
-    ipa.convert(chars) #convert polish to ipa for easier comparison
+        ipa.convert(chars) #convert polish to ipa for easier comparison
 
-    remove_chars(chars, [' ']) #remove spaces to allow clustering between words
+        wtr.write(''.join(chars) + '\n')
 
-    remove_vowels(chars, consts) #remove vowels to create clusters
+        remove_chars(chars, [' ']) #remove spaces to allow clustering between words
 
-    process_sentence(chars) #write to dict
+        remove_vowels(chars, consts) #remove vowels to create clusters
+
+        process_sentence(chars) #write to dict
 
 #write dict to csv
 with open('clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
