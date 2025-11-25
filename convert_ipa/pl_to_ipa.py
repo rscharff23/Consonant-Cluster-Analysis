@@ -37,7 +37,7 @@ def convert(chars):
             if curr.endswith('i') and chars[count + 1] not in (vw_pl): 
                 chars.insert(count+1,'i') #if is ci,si,dzi,zi and no other vowel, insert i afterwards
             chars[count] = pl_ipa_dict.get(curr, curr) #replace with ipa equivalent
-            
+        #TODO later: learn more about how to deal with 'i' and palatalization 
         elif curr in ['ą','ę']:#phonetic sound depends on next character
             if curr == 'ą':
                 chars[count] = 'ɔ'
