@@ -37,8 +37,8 @@ dr,179
 xw,56
 t͡sg,5
 t͡sgr,1
-nt͡s,381
-nt͡sp,9
+nt͡s,430
+nt͡sp,10
 nt͡spʐ,2
 t͡sp,18
 t͡spʐ,6
@@ -66,6 +66,7 @@ zd,135
 zdw,2
 vw,105
 wn,94
+ɲʑ,9
 ɕn,94
 vs,246
 vsp,81
@@ -82,6 +83,8 @@ kv,80
 t͡ʂt,23
 ʐt͡ʂ,75
 zv,203
+nd,265
+ndk,11
 dk,100
 ɕr,52
 dvz,1
@@ -107,6 +110,7 @@ t͡sv,34
 t͡svk,7
 gl,80
 xsp,14
+nd͡z,73
 sn,73
 xv,94
 xvt,2
@@ -123,6 +127,7 @@ vʑ,13
 ɕt,15
 vt͡s,64
 xr,39
+ŋk,111
 t͡svt͡ɕ,2
 vt͡ɕ,20
 mn,175
@@ -158,6 +163,7 @@ nv,39
 nvt,2
 nvtr,1
 ɕm,86
+nt,375
 t͡sk,65
 xz,59
 xzg,4
@@ -176,8 +182,7 @@ nz,30
 sx,33
 xzr,1
 kk,25
-nd,181
-nt͡sv,13
+nt͡sv,14
 nt͡svk,3
 zt͡ɕ,3
 sw,164
@@ -228,6 +233,7 @@ kt,380
 vg,19
 vgr,6
 ɲv,11
+ɲt͡ɕ,89
 kɕ,48
 nt͡sɕ,11
 t͡sɕ,12
@@ -246,7 +252,7 @@ xpʐ,29
 xvs,4
 xvsp,3
 xt͡ɕ,23
-mp,190
+mp,249
 mpʐ,24
 xb,20
 rd͡z,47
@@ -255,7 +261,7 @@ t͡svsp,3
 xk,40
 xzj,2
 kzn,2
-mb,54
+mb,79
 ktr,10
 xd͡ʑ,8
 db,24
@@ -296,11 +302,13 @@ rtk,7
 ʑd͡ʑ,9
 gd͡ʑ,25
 kvk,9
-ŋg,43
-ŋgn,20
+ŋg,61
+ŋgn,23
 vdr,11
 nt͡sr,7
 t͡sr,9
+ɲɕ,44
+ɲɕt͡ɕ,30
 xskʐ,1
 nt͡svd,2
 nt͡svdm,1
@@ -315,9 +323,11 @@ mw,32
 kvt͡ɕ,2
 rt͡s,29
 zt,60
+nt͡ʂ,64
+mbn,3
 bn,44
 km,19
-nt͡sz,12
+nt͡sz,14
 ɕl,92
 dzt͡ʂ,1
 zt͡ʂ,14
@@ -333,7 +343,7 @@ wst,3
 vpw,18
 pk,6
 t͡ʂkr,1
-nt͡sk,7
+nt͡sk,9
 t͡ʂz,3
 kvʑ,1
 dɕn,1
@@ -351,7 +361,7 @@ kd,16
 lf,4
 ss,14
 sst,1
-nt͡sd,7
+nt͡sd,9
 t͡sd,12
 t͡ss,11
 t͡sst,2
@@ -370,12 +380,12 @@ znz,1
 ns,113
 nst,25
 nstr,10
-nt,292
 ddv,1
 mbt͡s,1
 bt͡s,2
 msp,10
 ssk,1
+ɲd͡ʑ,85
 t͡st,17
 t͡stʐ,1
 t͡svb,3
@@ -419,7 +429,7 @@ dbʐ,1
 kbr,2
 kvp,4
 kzj,1
-nt͡ss,5
+nt͡ss,7
 nt͡ssk,1
 t͡ssk,2
 dsk,5
@@ -429,7 +439,7 @@ rst,28
 rstv,23
 mzj,1
 zf,10
-nt͡sd͡ʑ,1
+nt͡sd͡ʑ,2
 t͡sd͡ʑ,3
 ɕt͡ɕm,5
 ɕt͡ɕmw,1
@@ -452,10 +462,11 @@ bv,7
 bvj,1
 vj,29
 kzt͡ʂ,1
+ntn,16
 ɲk,3
 mx,13
 mt,57
-nt͡sj,45
+nt͡sj,46
 zkr,3
 tɕ,8
 tɕm,1
@@ -474,11 +485,10 @@ t͡szkv,1
 zkv,2
 msk,13
 mf,10
-ndl,8
+ndl,9
 kj,22
 zvr,11
 sxw,2
-ɲd͡ʑ,11
 t͡ɕk,26
 zvw,13
 ls,70
@@ -514,7 +524,6 @@ xsw,1
 lst͡s,11
 t͡ɕf,4
 kpʐ,9
-ntn,4
 stn,35
 ɕt͡ɕz,7
 ʂs,2
@@ -525,7 +534,7 @@ d͡ʑm,1
 bk,27
 t͡ɕʐ,5
 t͡ɕzn,4
-ndr,4
+ndr,9
 wɕ,82
 rmr,1
 ztv,3
@@ -538,25 +547,24 @@ ltr,2
 ltrv,1
 trv,13
 tb,15
+mpn,18
 pn,32
 mvs,6
 mvst,2
 mvstʐ,1
 vstʐ,10
 stʐ,49
+ndn,24
 stvp,4
 tvp,5
-ndk,4
 wvr,3
 xvʑ,1
-ɲt͡ɕ,27
 ɲt͡ɕv,1
 ɲt͡ɕvp,1
 t͡ɕv,50
 t͡ɕvp,6
 kbw,1
 wtʐ,1
-nd͡z,37
 ntk,21
 nf,40
 nfl,2
@@ -580,6 +588,8 @@ t͡szm,1
 ndp,4
 ndpr,2
 dpr,9
+ɲɕt͡ɕz,2
+ɲɕt͡ɕzn,1
 ɕt͡ɕzn,2
 ngl,2
 ʑt͡ɕ,7
@@ -643,7 +653,6 @@ gwb,9
 wb,22
 rʐ,9
 rvm,1
-nt͡ʂ,36
 ɕt͡ɕs,8
 t͡ɕs,36
 mj,29
@@ -679,7 +688,7 @@ t͡ɕt͡ʂt,1
 rr,9
 dt͡s,8
 mzm,3
-ntr,27
+ntr,29
 ʐvk,4
 rt͡ʂ,21
 gk,1
@@ -688,12 +697,13 @@ gv,18
 mzb,2
 mʂp,2
 tx,18
-nts,2
+nts,3
 ntsɕ,1
 tsɕ,1
 sɕ,2
 t͡ɕst,7
 t͡ɕstr,2
+nt͡ʂn,19
 rx,10
 vzm,3
 xf,8
@@ -746,6 +756,8 @@ tj,21
 wvt͡s,1
 stʂ,2
 tʂ,4
+ntʐ,10
+ntʐn,7
 tʐn,7
 bx,1
 tp,50
@@ -775,7 +787,6 @@ nsv,3
 nsvr,1
 svr,1
 ʂx,1
-ndn,4
 dgw,3
 xʂ,2
 xʂm,1
@@ -794,6 +805,7 @@ wzz,2
 wzd,3
 ndʐ,7
 lp,5
+ɲʑn,3
 mpl,10
 ɕt͡ɕr,2
 t͡ɕr,11
@@ -823,7 +835,6 @@ rfr,1
 t͡stv,13
 ɕt͡ɕsp,1
 ɕt͡ɕspr,1
-ŋk,15
 ŋkz,1
 ɕvr,1
 t͡ɕvw,2
@@ -831,12 +842,14 @@ t͡ɕkw,1
 ʐt͡s,5
 nvw,2
 ʑt͡ɕn,1
+ŋkʂ,26
 t͡ɕvn,4
 snk,1
 kf,1
-mps,2
+mps,5
 mpsk,1
 ll,11
+ɲɕt͡ɕv,1
 ɕt͡ɕv,10
 ʐvn,1
 ʐʂ,16
@@ -895,6 +908,7 @@ sxd,1
 ʂr,4
 rgx,1
 gx,3
+ɲt͡ɕs,3
 stz,10
 stzv,1
 tzv,1
@@ -935,16 +949,17 @@ t͡ɕpr,7
 sd,5
 mt͡ʂw,2
 nkr,5
+nt͡ssp,2
+nt͡sspr,1
 t͡ssp,2
 t͡sspr,1
 wtk,1
 ɕj,6
-ɲɕ,11
 ɲɕʂ,1
 ɲɕʂt͡ʂ,1
 ɕʂ,2
 ɕʂt͡ʂ,1
-ŋgl,2
+ŋgl,6
 vzd,1
 wf,2
 wfr,1
@@ -982,6 +997,7 @@ std,3
 td,11
 lsw,1
 ɕt͡ɕf,1
+nt͡sʐ,2
 t͡sʐ,3
 ɕt͡ɕd͡ʑ,2
 t͡ɕd͡ʑ,9
@@ -1001,6 +1017,7 @@ svsw,1
 ʐvp,4
 ʐvpw,1
 dɕv,1
+mbʂ,3
 bʂ,11
 zʑ,2
 ɲsp,1
@@ -1050,7 +1067,7 @@ kvsv,1
 vpl,2
 stm,8
 kvsw,1
-ɲt͡ɕz,2
+ɲt͡ɕz,4
 ɲt͡ɕzk,1
 t͡ɕzk,1
 xdv,4
@@ -1102,7 +1119,7 @@ stst,2
 tst,5
 nkt,5
 gb,2
-ɲt͡ɕm,1
+ɲt͡ɕm,2
 ndg,2
 rtr,5
 mzw,2
@@ -1113,8 +1130,10 @@ gt,4
 ɲvn,2
 btʐ,1
 zxʐ,3
+ŋkn,6
 ʐvpʐ,1
 st͡ɕ,2
+ɲt͡ɕk,3
 vdw,2
 ɕʐ,1
 t͡ʂl,1
@@ -1148,6 +1167,7 @@ d͡zb,2
 kspl,3
 spl,3
 nvr,1
+nt͡ʂp,3
 vxv,2
 mskw,2
 dgl,1
@@ -1171,11 +1191,12 @@ ksf,1
 nfr,5
 rkn,1
 wkw,2
+nt͡szg,1
 t͡szg,1
 ŋgw,2
 kd͡ʑ,3
 kxt͡s,1
-nt͡sl,3
+nt͡sl,4
 t͡sl,7
 rtp,1
 rtpʐ,1
@@ -1187,6 +1208,7 @@ mzdj,1
 lgʐ,1
 xzl,1
 lʂt͡ʂ,2
+ŋgʐ,1
 wvɕ,1
 wvɕp,1
 vɕp,1
@@ -1205,6 +1227,7 @@ rml,1
 ɲɕn,3
 zʐ,6
 t͡ɕmn,1
+ɲɕl,2
 rvw,1
 ɕt͡ɕpl,1
 ʑt͡ɕp,1
@@ -1245,6 +1268,7 @@ wt͡ɕ,4
 dvw,2
 kvb,2
 nd͡zk,1
+ɲɕt͡ɕzd,1
 ɕt͡ɕzd,1
 t͡ɕzd,4
 bʐm,1
@@ -1265,6 +1289,7 @@ zskʐ,1
 t͡ɕt͡ʂw,1
 ʂt͡ʂm,1
 rʂt͡ʂ,2
+mpt͡ʂ,3
 pt͡ʂ,5
 mɕr,2
 xvr,3
@@ -1298,7 +1323,6 @@ pstʐ,1
 d͡zt,4
 d͡ztv,4
 ɲt,2
-nt͡ʂn,7
 mʑl,1
 xzt͡ʂ,1
 xzt͡ʂs,1
@@ -1322,6 +1346,7 @@ t͡ɕd͡ʑv,1
 zgv,1
 svt͡ɕ,1
 ʐkr,1
+ɲt͡ɕd͡ʑ,1
 lr,1
 stvɕ,2
 stvɕv,1
@@ -1380,6 +1405,7 @@ trb,1
 kzgd,1
 zgd,1
 nzz,1
+mpt͡s,2
 tsp,3
 tspr,1
 stsp,2
@@ -1387,6 +1413,7 @@ stspʐ,1
 tspʐ,1
 xskw,3
 t͡ɕtrv,1
+ntst,1
 mvd͡ʑ,1
 ʐzr,1
 nzk,2
@@ -1395,6 +1422,7 @@ vzj,2
 t͡ɕvk,1
 stvstʐ,1
 tvstʐ,1
+ɲʑl,1
 ɕt͡ɕvj,1
 t͡ɕvj,1
 pp,4
@@ -1433,6 +1461,8 @@ fg,1
 fgl,1
 wmʂ,1
 skt,1
+ntd,2
+ntdl,2
 wps,1
 pt͡sj,2
 stg,5
@@ -1463,6 +1493,7 @@ wstv,1
 gxt,1
 t͡ʂvt,1
 bʐd,1
+ɲt͡ɕn,1
 ɕstr,1
 bvr,1
 ɕd,5
@@ -1539,7 +1570,6 @@ rwt,1
 wvk,2
 wvkl,1
 d͡ʑj,1
-ɲt͡ɕk,2
 wkr,1
 ʐzn,2
 lsj,1
@@ -1560,11 +1590,11 @@ t͡ɕvr,1
 lx,2
 vsn,1
 bt͡ʂ,1
+nt͡ʂm,1
 ngw,1
 ntpl,4
 ndstv,1
 dstv,2
-nt͡sʐ,1
 mskʐ,1
 mxt͡s,1
 ʐsk,1
@@ -1596,12 +1626,15 @@ dʂk,4
 vvpr,2
 ssm,1
 ntb,3
+mpst,3
+mpstv,3
 pstv,3
 sbr,1
 ngz,1
 t͡ʂsv,1
 vzgw,1
 ɲt͡ɕj,1
+mpd,4
 pd,4
 mdv,2
 bst͡s,1
@@ -1639,6 +1672,7 @@ t͡ɕgm,2
 ɲt͡ɕp,1
 dkw,1
 zvʂ,2
+ŋkk,1
 ʂtm,1
 mkw,1
 zdʐ,2
@@ -1651,6 +1685,7 @@ xdb,1
 lsv,1
 lsvx,1
 svx,1
+nd͡zm,1
 d͡zm,2
 mzv,3
 t͡ʂd,2
@@ -1680,6 +1715,7 @@ tʂk,1
 t͡ɕdr,1
 ktn,2
 ɲvsp,1
+nt͡szt,1
 t͡szt,1
 ʂt͡ʂd,1
 zzk,1
@@ -1690,11 +1726,13 @@ stʐk,1
 tʐk,1
 kʂw,1
 mʑr,1
+ɲɕt͡ɕɕ,1
+ɲɕt͡ɕɕr,1
 ɕt͡ɕɕ,1
 ɕt͡ɕɕr,1
 t͡ɕɕr,1
-ɲt͡ɕs,1
 sdw,1
+ŋkj,1
 stvsp,2
 tvsp,2
 t͡ɕzp,2
@@ -1720,6 +1758,8 @@ t͡ɕzdj,1
 mmw,2
 rbk,1
 gwm,1
+mpv,1
+mpvm,1
 pvm,1
 t͡ɕɕn,1
 xmr,1
@@ -1749,6 +1789,7 @@ nt͡szw,1
 t͡szw,1
 t͡ʂvt͡ɕ,1
 xmw,1
+ɲt͡ɕzm,1
 swsm,1
 wsm,1
 pʐr,1
@@ -1768,9 +1809,7 @@ mkt,1
 lmp,1
 lmpʐ,1
 kxʐ,1
-ŋkn,1
 kgd͡ʑ,1
-ntʐ,2
 ntʐp,1
 ɕxt͡ɕ,1
 gwd,1
@@ -1786,6 +1825,7 @@ vxl,1
 mvt͡ʂ,1
 gwɕ,1
 kt͡ʂv,1
+ɲɕt͡ɕs,2
 rtn,3
 st͡spʐ,1
 bstr,1
@@ -1903,6 +1943,7 @@ lnn,1
 ɕg,1
 ɕkl,1
 t͡ɕɕt͡ɕ,1
+ɲɕt͡ɕp,1
 ntʐb,1
 tʐb,1
 ɕt͡ɕvp,1
@@ -1933,7 +1974,6 @@ ktzn,1
 tzn,1
 dsm,1
 zzn,1
-nt͡ʂp,1
 nt͡ʂpl,1
 t͡ʂpl,1
 gzv,1
@@ -1992,4 +2032,5 @@ nzt,1
 nztʐ,1
 t͡sgw,1
 skb,1
+ɲɕt͡ɕn,1
 stgw,1

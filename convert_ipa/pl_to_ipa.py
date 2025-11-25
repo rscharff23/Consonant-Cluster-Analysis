@@ -32,13 +32,18 @@ def convert(chars):
     combine_digraphs(chars,di_pl)
     count = 0
     while count < len(chars):#go through each char
-        if chars[count] in pl_ipa_dict.keys(): #if is changed 1:1 in ipa
-            if chars[count].endswith('i') and chars[count + 1] not in (vw_pl): 
+        curr = chars[count]
+        if curr in pl_ipa_dict.keys(): #if is changed 1:1 in ipa
+            if curr.endswith('i') and chars[count + 1] not in (vw_pl): 
                 chars.insert(count+1,'i') #if is ci,si,dzi,zi and no other vowel, insert i afterwards
-            chars[count] = pl_ipa_dict.get(chars[count], chars[count]) #replace with ipa equivalent
-        elif chars[count] == 'ą':#phonetic sound depends on next character
-            chars[count] = 'ɔ'
-            match (chars[count + 1]) :
+            chars[count] = pl_ipa_dict.get(curr, curr) #replace with ipa equivalent
+            
+        elif curr in ['ą','ę']:#phonetic sound depends on next character
+            if curr == 'ą':
+                chars[count] = 'ɔ'
+            else:
+                chars[count] = 'ɛ'
+            match (chars[count + 1]): #pattern is the same other than for EOW
                 case 'k'|'g' :
                     chars.insert(count+1,'ŋ')
                 case 't'|'d'|'c'|'dz'|'cz'|'dż':
@@ -47,10 +52,16 @@ def convert(chars):
                     chars.insert(count+1,'m')
                 case 'ś'|'ź'|'ć'|'dź'|'si'|'zi'|'ci'|'dzi':
                     chars.insert(count+1,'ɲ')
-                case 'l'|'ł':
+                case 'f'|'w'|'s'|'z'|'sz'|'ż'|'rz'|'ch'|'h':
+                    if curr == 'ą':
+                        chars[count] = 'ɔw̃'
+                    else:
+                        chars[count] = 'ɛw̃'
+                case 'l'|'ł': 
                     continue
-                case _:
-                    chars[count] = 'ɔw̃'
+                case _: #end of word case
+                    if curr == 'ą':
+                        chars[count] = 'ɔw̃'
             
         count += 1
     
