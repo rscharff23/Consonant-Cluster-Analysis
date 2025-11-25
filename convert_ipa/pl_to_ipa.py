@@ -1,7 +1,9 @@
 import csv
 
-di_pl = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi'] #polish 
+di_pl = ['cz','sz','rz','dż','dź','dz','ch','si','ci','zi'] #polish digraphs
 vw_pl = ['a','ą','e','ę','i','o','ó','u','y']
+
+v_dv_pairs = {'b':'p','d':'t','g':'k','w':'f','z':'s','ź':'ś','ż':'sz','rz':'sz','dź':'ć','dż':'cz','zi':'si','dzi':'ci'}
 
 #read in dict with pl -> ipa matchings
 pl_ipa_dict = {}
@@ -25,6 +27,15 @@ def combine_digraphs(chars,digraphs):
                 chars[i] = chars[i]+chars[i+1] #if so, combine them into one
             chars.pop(i+1) #and remove next
         i += 1
+
+def voice_devoice(chars):
+    cluster_break = vw_pl + ['.' + ' ']
+    for i in range(len(chars)-1):
+        if chars[i] not in cluster_break: #starting at each consonant
+            count = 1 #cluster must have at least 2 sounds
+            while chars[i+count] != ' ': #until we find a vowel/other symbol
+                count += 1 #check next char
+    pass
 
 #turns polish (consonant) chars individually into ipa equivalent, resulting sentence is NOT ipa equivalent
 #due to voicing and other small quirks which are fixed in a separate function

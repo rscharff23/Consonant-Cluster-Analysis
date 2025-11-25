@@ -33,7 +33,7 @@ def remove_vowels(chars, cons):
 def process_sentence(chars, cl_dict):
     char_min = 2 #change this to adjust minimum necessary sounds
     for i in range(len(chars)-1):
-        if chars[i] not in [' ', 'j','ci','si','zi','dzi']: #starting at each consonant
+        if chars[i] not in [' ', 'j']: #starting at each consonant
             count = 1 #cluster must have at least 2 sounds
             while chars[i+count] != ' ': #until we find a vowel/other symbol
                 cl = ''
