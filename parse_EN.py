@@ -1,6 +1,6 @@
 import pandas as pd
 from parse_PL import remove_chars,remove_vowels, process_sentence
-from convert_ipa.pl_to_ipa import combine_digraphs
+from convert_ipa.pl_to_ipa_dev import combine_digraphs
 import csv
 
 ipa_consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','p','r','s','ʃ','t','v','w','z','θ','ð','t͡s','d͡z','t͡ʃ','d͡ʒ','ʒ']

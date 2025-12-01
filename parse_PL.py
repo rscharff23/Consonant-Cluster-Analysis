@@ -2,7 +2,7 @@ from conllu import parse_incr
 from io import open
 import csv
 from pl_ipa import ipa_polish
-from convert_ipa.pl_to_ipa import combine_digraphs
+from convert_ipa.pl_to_ipa_dev import combine_digraphs
 
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
