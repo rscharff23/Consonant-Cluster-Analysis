@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # coding: utf-8
-# AUTHOR: lukyjanek on GitHub
+# ORIGINAL AUTHOR: lukyjanek on GitHub with small modifications for convenience
 
 """Phonetic transcription of Polish text to IPA."""
 
@@ -18,7 +18,7 @@ def ipa_polish(text):
     sonors = {'j': 'j', 'm': 'm', 'n': 'n', 'ń': 'ɲ', 'ni': 'ɲ', 'r': 'r',
               'l': 'l', 'ł': 'w'}
 
-    voice_voice = {'b': 'b', 'd': 'd', 'g': 'ɡ', 'w': 'v', 'z': 'z',
+    voice_voice = {'b': 'b', 'd': 'd', 'g': 'g', 'w': 'v', 'z': 'z',
                    'dź': 'd͡ʑ', 'dzi': 'd͡ʑ', 'ź': 'ʑ', 'zi': 'ʑ', 'dz': 'd͡z',
                    'dż': 'd͡ʐ', 'ż': 'ʐ', 'rz': 'ʐ', 'h': 'ɣ', 'ch': 'ɣ',
                    'v': 'v', 'q': 'kv', 'x': 'ks'}
@@ -32,7 +32,7 @@ def ipa_polish(text):
                            'ć': 't͡ɕ', 'ci': 't͡ɕ', 'ś': 'ɕ', 'si': 'ɕ',
                            'c': 't͡s', 'cz': 't͡ʂ', 'sz': 'ʂ'}
 
-    voiceless_voice = {'p': 'b', 't': 'd', 'k': 'ɡ', 'f': 'v', 's': 'z',
+    voiceless_voice = {'p': 'b', 't': 'd', 'k': 'g', 'f': 'v', 's': 'z',
                        'ć': 'd͡ʑ', 'ci': 'd͡ʑ', 'ś': 'ʑ', 'si': 'ʑ',
                        'c': 'd͡z', 'cz': 'd͡ʐ', 'sz': 'ʐ'}
 
