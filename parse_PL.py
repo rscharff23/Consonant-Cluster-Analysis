@@ -1,13 +1,14 @@
 from conllu import parse_incr
 from io import open
 import csv
-import convert_ipa.pl_to_ipa as ipa
+from pl_ipa import ipa_polish
+from convert_ipa.pl_to_ipa import combine_digraphs
 
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
 
-consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','ɲ','p','r','s','ɕ','ʂ','t','v','w','z',
-          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x'] #ipa consonants present in polish
+consts = ['b','d','f','ɡ','h','j','k','l','m','n','ŋ','ɲ','p','r','s','ɕ','ʂ','t','v','w','z',
+          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x','ɣ'] #ipa consonants present in polish
 
 
 
@@ -33,7 +34,7 @@ def remove_vowels(chars, cons):
 def process_sentence(chars, cl_dict):
     char_min = 2 #change this to adjust minimum necessary sounds
     for i in range(len(chars)-1):
-        if chars[i] not in [' ', 'j']: #starting at each consonant
+        if chars[i] not in [' ', 'j']: #starting at each consonant, j not consonant at start of cluster
             count = 1 #cluster must have at least 2 sounds
             while chars[i+count] != ' ': #until we find a vowel/other symbol
                 cl = ''
@@ -67,11 +68,12 @@ with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
 #find clusters and write to db (dict)
 with open ('data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") as wtr:
     for i in sentences:
-        chars = list(i.lower()) #make each sentence into a list of lowercase characters
-        ipa.convert(chars) #convert polish to ipa for easier comparison
 
-        wtr.write(''.join(chars) + '\n')#print sentences in ipa form for reference
+        sent = ipa_polish(i.lower()) #convert polish to ipa for easier comparison
+        wtr.write(sent + '\n')#print sentences in ipa form for reference
 
+        chars = list(sent) #reformat sentence to list of chars for ease
+        combine_digraphs(chars, []) #combine ipa digraphs to one char slot
         remove_chars(chars, [' ']) #remove spaces to allow clustering between words
         remove_vowels(chars, consts) #remove vowels to create clusters
         process_sentence(chars,clusters) #write to dict
