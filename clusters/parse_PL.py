@@ -1,13 +1,17 @@
 from conllu import parse_incr
 from io import open
 import csv
-import convert_ipa.pl_to_ipa as ipa
+from convert_ipa.pl_ipa import ipa_polish # work to remove this
+from convert_ipa.pl_to_ipa_dev import combine_digraphs
 
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
 
+#ipa consonants present in polish
 consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','ɲ','p','r','s','ɕ','ʂ','t','v','w','z',
-          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x'] #ipa consonants present in polish
+          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x','ɣ','d͡ʒ','t͡ʃ','ʒ','ʃ'] 
+
+simplified = {'d͡ʐ':'d͡ʒ','t͡ʂ':'t͡ʃ','d͡ʑ':'d͡ʒ','t͡ɕ':'t͡ʃ','ɕ':'ʃ','ʂ':'ʃ','ʐ':'ʒ','ʑ':'ʒ'}
 
 
 
@@ -28,12 +32,14 @@ def remove_vowels(chars, cons):
         if chars[i] not in (cons):
             chars[i] = ' '#set vowels and other chars to spaces, keeping clusters separate
 
+
+
 #the following approach adds all clusters of size >= char_min to the db, and within each cluster
 #includes any subclusters of sufficient size; eg. adds not only ftb but also ft and fb
 def process_sentence(chars, cl_dict):
     char_min = 2 #change this to adjust minimum necessary sounds
     for i in range(len(chars)-1):
-        if chars[i] not in [' ', 'j','ci','si','zi','dzi']: #starting at each consonant
+        if chars[i] not in [' ', 'j']: #starting at each consonant, j not consonant at start of cluster
             count = 1 #cluster must have at least 2 sounds
             while chars[i+count] != ' ': #until we find a vowel/other symbol
                 cl = ''
@@ -51,7 +57,7 @@ def process_sentence(chars, cl_dict):
 ### PROCESSING
 
 #parse file to sentences
-data_file = open("data_pl/pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
+data_file = open("clusters/data_pl/pl_pdb-ud-train.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
     #remove any sentences with abbreviations; cannot be accurately transcribed
     if not any(token.get('feats') and token.get('feats').get('Abbr') == 'Yes' for token in tokenlist):
@@ -60,25 +66,32 @@ for tokenlist in parse_incr(data_file):
             sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
 #write sentences to text file for easier reading
-with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
+with open ('clusters/data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
     for i in sentences:
         txt.write(i + "\n")
 
 #find clusters and write to db (dict)
-with open ('data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") as wtr:
+with open ('clusters/data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") as wtr:
     for i in sentences:
-        chars = list(i.lower()) #make each sentence into a list of lowercase characters
-        ipa.convert(chars) #convert polish to ipa for easier comparison
 
-        wtr.write(''.join(chars) + '\n')#print sentences in ipa form for reference
+        sent = ipa_polish(i.lower()) #convert polish to ipa for easier comparison
+        wtr.write(sent + '\n')#print sentences in ipa form for reference
+
+        chars = list(sent) #reformat sentence to list of chars for ease
+        combine_digraphs(chars, []) #combine ipa digraphs to one char slot
+
+        #the following modification is made solely for the purposes of comparison with the english
+        #language, when analyzing polish alone, remove it
+        chars = [simplified.get(i,i) for i in chars] # changes ɕ,ʂ,ʐ,ʑ to match simplified english ipa
+
 
         remove_chars(chars, [' ']) #remove spaces to allow clustering between words
         remove_vowels(chars, consts) #remove vowels to create clusters
         process_sentence(chars,clusters) #write to dict
 
 #write dict to csv
-with open('clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
+with open('clusters/clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['cluster','occurences'])
+    writer.writerow(['cluster','occurences_pl'])
     for i in clusters.items():
         writer.writerow(i)

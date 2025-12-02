@@ -13,4 +13,6 @@ Alina Wróblewska, 2018. *Extended and Enhanced Polish Dependency Bank in Univer
 In de Marneffe, Marie-Catherine and Lynn, Teresa and Schuster, Sebastian (Ed.) *Proceedings of the Second Workshop on Universal Dependencies (UDW 2018)* (pp. 173-182). Association for Computational Linguistics
 
 
-TODO: final polish ipa fixes: voicing/devoicing clusters, lots of bug testing
+TODO: analysis + visualizations
+
+The dev branch is currently finished with parsing, but uses another implementation to put polish sentence into ipa. In the future, with more time, create own implementation. 
