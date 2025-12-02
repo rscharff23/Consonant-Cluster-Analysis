@@ -11,7 +11,7 @@ unvoiced_obs = v_dv_pairs.values()
 
 #read in dict with pl -> ipa matchings
 pl_ipa_dict = {}
-with open('convert_ipa/pl_ipa_pairs.csv', 'r', encoding="utf-8-sig") as ipa:
+with open('clusters/convert_ipa/pl_ipa_pairs.csv', 'r', encoding="utf-8-sig") as ipa:
     wr = csv.DictReader(ipa)
     for row in wr:
         pl_ipa_dict[row['pl']] = row['ipa']

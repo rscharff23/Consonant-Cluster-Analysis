@@ -5,10 +5,10 @@ import csv
 
 ipa_consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','p','r','s','ʃ','t','v','w','z','θ','ð','t͡s','d͡z','t͡ʃ','d͡ʒ','ʒ']
 
-df = pd.read_csv('data_en/sentences_en.csv')
+df = pd.read_csv('clusters/data_en/sentences_en.csv')
 
 clusters = {}#dict to hold clusters
-with open('data_en/ipa_sentences_en.txt','w', encoding="utf-8-sig") as ipa:
+with open('clusters/data_en/ipa_sentences_en.txt','w', encoding="utf-8-sig") as ipa:
     for s in df['phonemes']:
         s = s.replace('ts','t͡s').replace('dz','d͡z').replace('tʃ','t͡ʃ').replace('dʒ','d͡ʒ')
         chars = list(s)

@@ -1,7 +1,7 @@
 from conllu import parse_incr
 from io import open
 import csv
-from pl_ipa import ipa_polish # work to remove this
+from convert_ipa.pl_ipa import ipa_polish # work to remove this
 from convert_ipa.pl_to_ipa_dev import combine_digraphs
 
 sentences = [] #contains full sentences after parsing 
@@ -57,7 +57,7 @@ def process_sentence(chars, cl_dict):
 ### PROCESSING
 
 #parse file to sentences
-data_file = open("data_pl/pl_pdb-ud-train.conllu", "r", encoding="utf-8")
+data_file = open("clusters/data_pl/pl_pdb-ud-train.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
     #remove any sentences with abbreviations; cannot be accurately transcribed
     if not any(token.get('feats') and token.get('feats').get('Abbr') == 'Yes' for token in tokenlist):
@@ -66,12 +66,12 @@ for tokenlist in parse_incr(data_file):
             sentences.append(tokenlist.metadata.get('text')) #convert conllu to normal sentences
 
 #write sentences to text file for easier reading
-with open ('data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
+with open ('clusters/data_pl/sentences_pl.txt', 'w', encoding="utf-8-sig") as txt:
     for i in sentences:
         txt.write(i + "\n")
 
 #find clusters and write to db (dict)
-with open ('data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") as wtr:
+with open ('clusters/data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") as wtr:
     for i in sentences:
 
         sent = ipa_polish(i.lower()) #convert polish to ipa for easier comparison
