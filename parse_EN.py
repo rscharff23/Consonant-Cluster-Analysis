@@ -21,7 +21,8 @@ with open('data_en/ipa_sentences_en.txt','w', encoding="utf-8-sig") as ipa:
         process_sentence(chars,clusters) #update dict with clusters and prevalence
 
 #write dict to csv file
-with open('clusters_en.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
+with open('clusters/clusters_en.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
+    writer.writerow(['cluster','occurences_en'])
     for i in clusters.items():
         writer.writerow(i)

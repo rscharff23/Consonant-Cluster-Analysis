@@ -1,7 +1,7 @@
 from conllu import parse_incr
 from io import open
 import csv
-from pl_ipa import ipa_polish
+from pl_ipa import ipa_polish # work to remove this
 from convert_ipa.pl_to_ipa_dev import combine_digraphs
 
 sentences = [] #contains full sentences after parsing 
@@ -57,7 +57,7 @@ def process_sentence(chars, cl_dict):
 ### PROCESSING
 
 #parse file to sentences
-data_file = open("data_pl/pl_pdb-ud-dev.conllu", "r", encoding="utf-8")
+data_file = open("data_pl/pl_pdb-ud-train.conllu", "r", encoding="utf-8")
 for tokenlist in parse_incr(data_file):
     #remove any sentences with abbreviations; cannot be accurately transcribed
     if not any(token.get('feats') and token.get('feats').get('Abbr') == 'Yes' for token in tokenlist):
@@ -90,8 +90,8 @@ with open ('data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") as wtr:
         process_sentence(chars,clusters) #write to dict
 
 #write dict to csv
-with open('clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
+with open('clusters/clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['cluster','occurences'])
+    writer.writerow(['cluster','occurences_pl'])
     for i in clusters.items():
         writer.writerow(i)
