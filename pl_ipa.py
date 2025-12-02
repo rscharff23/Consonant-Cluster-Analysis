@@ -21,12 +21,12 @@ def ipa_polish(text):
     voice_voice = {'b': 'b', 'd': 'd', 'g': 'g', 'w': 'v', 'z': 'z',
                    'dź': 'd͡ʑ', 'dzi': 'd͡ʑ', 'ź': 'ʑ', 'zi': 'ʑ', 'dz': 'd͡z',
                    'dż': 'd͡ʐ', 'ż': 'ʐ', 'rz': 'ʐ', 'h': 'ɣ', 'ch': 'ɣ',
-                   'v': 'v', 'q': 'kv', 'x': 'ks'}
+                   'v': 'v', 'q': 'k', 'x': 'ks'}
 
     voice_voiceless = {'b': 'p', 'd': 't', 'g': 'k', 'w': 'f', 'z': 's',
                        'dź': 't͡ɕ', 'dzi': 't͡ɕ', 'ź': 'ɕ', 'zi': 'ɕ',
                        'dz': 't͡s', 'dż': 'd͡ʐ', 'ż': 'ʂ', 'rz': 'ʂ', 'h': 'x',
-                       'ch': 'x', 'v': 'f', 'q': 'kf', 'x': 'ks'}
+                       'ch': 'x', 'v': 'f', 'q': 'k', 'x': 'ks'}
 
     voiceless_voiceless = {'p': 'p', 't': 't', 'k': 'k', 'f': 'f', 's': 's',
                            'ć': 't͡ɕ', 'ci': 't͡ɕ', 'ś': 'ɕ', 'si': 'ɕ',

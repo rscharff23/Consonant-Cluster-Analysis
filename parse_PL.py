@@ -7,8 +7,11 @@ from convert_ipa.pl_to_ipa_dev import combine_digraphs
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
 
+#ipa consonants present in polish
 consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','ɲ','p','r','s','ɕ','ʂ','t','v','w','z',
-          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x','ɣ'] #ipa consonants present in polish
+          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x','ɣ','d͡ʒ','t͡ʃ','ʒ','ʃ'] 
+
+simplified = {'d͡ʐ':'d͡ʒ','t͡ʂ':'t͡ʃ','d͡ʑ':'d͡ʒ','t͡ɕ':'t͡ʃ','ɕ':'ʃ','ʂ':'ʃ','ʐ':'ʒ','ʑ':'ʒ'}
 
 
 
@@ -28,6 +31,8 @@ def remove_vowels(chars, cons):
     for i in range(len(chars)):
         if chars[i] not in (cons):
             chars[i] = ' '#set vowels and other chars to spaces, keeping clusters separate
+
+
 
 #the following approach adds all clusters of size >= char_min to the db, and within each cluster
 #includes any subclusters of sufficient size; eg. adds not only ftb but also ft and fb
@@ -74,6 +79,12 @@ with open ('data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") as wtr:
 
         chars = list(sent) #reformat sentence to list of chars for ease
         combine_digraphs(chars, []) #combine ipa digraphs to one char slot
+
+        #the following modification is made solely for the purposes of comparison with the english
+        #language, when analyzing polish alone, remove it
+        chars = [simplified.get(i,i) for i in chars] # changes ɕ,ʂ,ʐ,ʑ to match simplified english ipa
+
+
         remove_chars(chars, [' ']) #remove spaces to allow clustering between words
         remove_vowels(chars, consts) #remove vowels to create clusters
         process_sentence(chars,clusters) #write to dict
