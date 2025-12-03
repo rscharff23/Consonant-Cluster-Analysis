@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Consonant Cluster Analysis</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>Overview</h1>
+
+        <p>
+            The analysis of consonant clusters between the English and Polish language can be found below.
+            Included in the analysis is a Cleveland dot plot, a customizable scatter plot, and a tree plot.
+        </p>
+
+        <svg id="cl_dot_plot" width="500" height="800"> <!--plot frame-->
+            <text x="120" y="785">Relative Prevalence of Cluster in Polish</text> <!--xaxis text-->
+            <text x="0" y="400" transform="rotate(270,15,400)">Cluster (IPA)</text> <!--yaxis text-->
+            <text x="75" y = "20">More English</text>
+            <text x="350" y = "20">More Polish</text>
+        </svg>
+
+        <div id="tooltip"></div> <!--create body for tooltips-->
+        <br>
+
+        <label for="threshold">Overall Frequency  Minimum Threshold:</label>
+        <input type="range" id="threshold" min="0" max="0.5" step="0.001" value="0.05">
+        <span id="threshold-value">0.1</span>
+
+        <br>
+
+        <svg id="scatterplot" width="800" height="800"> <!--plot frame-->
+            <text x="400" y="785">Date</text> <!--xaxis text-->
+            <text x="15" y="400" transform="rotate(270,15,400)">LAT</text> <!--yaxis text-->
+        </svg>
+
+        <svg id="tree_plot" width="800" height="800"> <!--plot frame-->
+            <text x="400" y="785">Tree</text> <!--xaxis text-->
+        </svg>
+
+        <script type = "text/javascript">
+            d3.csv("merged_clusters.csv", function(d) {
+                return {
+                    cluster: d.cluster, //declare types and names
+                    npl: +d.occurences_pl, 
+                    nen: +d.occurences_en,
+                    fpl: +d.frequency_pl,
+                    fen: +d.frequency_en,
+                    fttl: +d.total_frequency,//total frequency
+                    frel: +d.relative_frequency//relative frequency
+                }
+            }).then(function(data) {
+
+                const svg = d3.select("#cl_dot_plot") //select svg object
+                const tooltip = d3.select("#tooltip") //and select tooltips
+                const axis = 75 //leave space for axes
+                const hsize = 800 //height
+                const wsize = 500 //length
+                data.sort((a, b) => d3.ascending(a.frel, b.frel)) //sort by relative frequency
+
+                filtered = data.filter(d=>d.fttl > 0.05)//starting value for frequency filter
+
+                const x = d3.scaleLinear() //x values
+                    .domain([0,1])
+                    .range([axis,wsize-axis])
+
+                const y = d3.scaleBand() //y values
+                    .domain(filtered.map(d=>d.cluster)) //make band for each
+                    .range([30, hsize-axis]) // flip y axis to start at bottom
+
+                svg.selectAll("circle") //make circles for all points
+                    .data(filtered)
+                    .enter().append("circle")
+                    .attr("cx", d => x(d.frel))
+                    .attr("cy", d => y(d.cluster) + y.bandwidth()/2)
+                    .attr("r", 3) //radius must be large to avoid issues with tooltips
+                    .on("mouseover", (event, d) => {//when mouse is over dot
+                        tooltip.style("opacity",1)//make tooltip apparent
+                            .html(`Cluster: ${d.cluster}<br>Relative Frequency: ${d.frel}`) //show these stats
+                    }).on("mousemove", (event) => {
+                        tooltip.style("left", event.pageX + 10 + "px")
+                                .style("top", event.pageY + "px");
+                    }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
+
+                svg.selectAll(".stem") //tracking lines
+                    .data(filtered)
+                    .join("line")
+                    .attr("class", "stem")
+                    .attr("x1", x(0))
+                    .attr("x2", d => x(d.frel))
+                    .attr("y1", d => y(d.cluster) + y.bandwidth()/2)
+                    .attr("y2", d => y(d.cluster) + y.bandwidth()/2)
+                    .attr("stroke", "#aaa")
+                    .attr("stroke-width", 1)
+                    .attr("stroke-opacity", 0.3)//keep light
+                
+                svg.append("g") //x axis
+                    .attr("class", "x-axis")
+                    .attr("transform", "translate(0, " + 740 + ")")
+                    .call(d3.axisBottom(x))
+
+                svg.append("g") //y axis
+                    .attr("class", "y-axis")
+                    .attr("transform", "translate(" + 60 + ", 0)")
+                    .call(d3.axisLeft(y).tickPadding(0))
+
+                svg.append("line")//center line
+                    .attr("x1",250)
+                    .attr("x2",250)
+                    .attr("y1",0)
+                    .attr("y2",725)
+                    .attr("stroke","black")
+                    .attr("stroke-opacity", 0.5)                    
+
+                d3.select("#threshold").on("input", function () { //when slider moved, call update
+                    const value = +this.value; //slider value
+                    d3.select("#threshold-value").text(value.toFixed(3));//fix text
+                    updateScope(value); //update plot              
+                });
+
+                function updateScope(threshold) {//called when desired frequency filter is changed
+
+                    const filtered = data.filter(d => d.fttl >= threshold) //update filter
+                    y.domain(filtered.map(d=>d.cluster)) //update clusters
+                    svg.select(".y-axis") //update y axis
+                        .call(d3.axisLeft(y).tickPadding(10));
+
+                    svg.selectAll(".stem") //update lines
+                        .data(filtered)
+                        .join("line")
+                        .attr("class", "stem")
+                        .attr("x1", x(0))
+                        .attr("x2", d => x(d.frel))
+                        .attr("y1", d => y(d.cluster) + y.bandwidth()/2)
+                        .attr("y2", d => y(d.cluster) + y.bandwidth()/2)
+                        .attr("stroke", "#aaa")
+                        .attr("stroke-width", 1)
+                        .attr("stroke-opacity", 0.3)//keep light
+                    
+                    const circles = svg.selectAll("circle")
+                        .data(filtered, d => d.cluster)
+
+                    circles.exit().remove();
+
+                    circles.enter()
+                        .append("circle")
+                        .merge(circles)
+                        .attr("cx", d => x(d.frel))
+                        .attr("cy", d => y(d.cluster) + y.bandwidth()/2)
+                        .attr("r", 3)
+                }
+
+            })
+        </script>
+    </body> 
+</html>
