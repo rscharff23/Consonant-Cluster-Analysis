@@ -3,6 +3,7 @@ from io import open
 import csv
 from convert_ipa.pl_ipa import ipa_polish # work to remove this
 from convert_ipa.pl_to_ipa_dev import combine_digraphs
+import pandas as pd
 
 sentences = [] #contains full sentences after parsing 
 clusters = {} #dict to contain each cluster and their number of occurences
@@ -52,6 +53,11 @@ def process_sentence(chars, cl_dict):
                         cl_dict[cl] += 1
                 count += 1 #check next char
 
+def lng(clust):
+    arr = []
+    for i in clust:
+        arr.append(len(i) - (2*i.count('͡')))
+    return arr
 
 
 ### PROCESSING
@@ -89,9 +95,12 @@ with open ('clusters/data_pl/ipa_sentences_pl.txt', 'w', encoding="utf-8-sig") a
         remove_vowels(chars, consts) #remove vowels to create clusters
         process_sentence(chars,clusters) #write to dict
 
-#write dict to csv
-with open('clusters/clusters_pl.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(['cluster','occurences_pl'])
-    for i in clusters.items():
-        writer.writerow(i)
+data = {#reformat to dataframe
+    'cluster': clusters.keys(),
+    'occurences_pl': clusters.values(),
+    'length': lng(clusters.keys()) #get length of each cluster
+}
+df = pd.DataFrame(data)
+
+#write to csv
+df.to_csv('clusters/clusters_pl.csv',index=False)

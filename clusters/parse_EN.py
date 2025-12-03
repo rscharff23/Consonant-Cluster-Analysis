@@ -1,5 +1,5 @@
 import pandas as pd
-from parse_PL import remove_chars,remove_vowels, process_sentence
+from parse_PL import remove_chars,remove_vowels, process_sentence, lng
 from convert_ipa.pl_to_ipa_dev import combine_digraphs
 import csv
 
@@ -20,9 +20,12 @@ with open('clusters/data_en/ipa_sentences_en.txt','w', encoding="utf-8-sig") as 
         remove_vowels(chars, ipa_consts) #isolate clusters by removing everything left
         process_sentence(chars,clusters) #update dict with clusters and prevalence
 
-#write dict to csv file
-with open('clusters/clusters_en.csv', 'w', newline='', encoding="utf-8-sig") as csvfile:
-    writer = csv.writer(csvfile)
-    writer.writerow(['cluster','occurences_en'])
-    for i in clusters.items():
-        writer.writerow(i)
+data = {#reformat to dataframe
+    'cluster': clusters.keys(),
+    'occurences_en': clusters.values(),
+    'length': lng(clusters.keys()) #get length of each cluster
+}
+df = pd.DataFrame(data)
+
+#write to csv
+df.to_csv('clusters/clusters_en.csv',index=False)
