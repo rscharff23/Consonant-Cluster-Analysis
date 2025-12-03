@@ -1,0 +1,277 @@
+d3.csv("merged_clusters.csv", function(d) {
+    return {
+        cluster: d.cluster, //declare types and names
+        len: +d.length,
+        npl: +d.occurences_pl, 
+        nen: +d.occurences_en,
+        fpl: +d.frequency_pl,
+        fen: +d.frequency_en,
+        fttl: +d.total_frequency,//total frequency
+        frel: +d.relative_frequency//relative frequency
+    }
+}).then(function(data) {
+
+
+    //CLEVELAND DOT PLOT
+    const svg = d3.select("#cl_dot_plot") //select svg object
+    const tooltip = d3.select("#tooltip") //and select tooltips
+    const axis = 75 //leave space for axes
+    const hsize = 800 //height
+    const wsize = 500 //length
+    data.sort((a, b) => d3.ascending(a.frel, b.frel)) //sort by relative frequency
+
+    filtered = data.filter(d=>d.fttl > 0.1)//starting value for frequency filter
+
+    const x = d3.scaleLinear() //x values
+        .domain([0,1])
+        .range([axis,wsize-axis])
+
+    const y = d3.scaleBand() //y values
+        .domain(filtered.map(d=>d.cluster)) //make band for each
+        .range([30, hsize-axis]) // flip y axis to start at bottom
+
+    svg.selectAll("circle") //make circles for all points
+        .data(filtered)
+        .enter().append("circle")
+        .attr("cx", d => x(d.frel))
+        .attr("cy", d => y(d.cluster) + y.bandwidth()/2)
+        .attr("r", 3) //radius must be large to avoid issues with tooltips
+        .on("mouseover", (event, d) => {//when mouse is over dot
+            tooltip.style("opacity",1)//make tooltip apparent
+                .html(`Cluster: ${d.cluster}<br>Relative Frequency: ${d.frel}`) //show these stats
+        }).on("mousemove", (event) => {
+            tooltip.style("left", event.pageX + 10 + "px")
+                    .style("top", event.pageY + "px");
+        }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
+
+    svg.selectAll(".stem") //tracking lines
+        .data(filtered)
+        .join("line")
+        .attr("class", "stem")
+        .attr("x1", x(0))
+        .attr("x2", d => x(d.frel))
+        .attr("y1", d => y(d.cluster) + y.bandwidth()/2)
+        .attr("y2", d => y(d.cluster) + y.bandwidth()/2)
+        .attr("stroke", "grey")
+        .attr("stroke-width", 1)
+        .attr("stroke-opacity", 0.3)//keep light
+    
+    svg.append("g") //x axis
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0, " + 740 + ")")
+        .call(d3.axisBottom(x))
+
+    svg.append("g") //y axis
+        .attr("class", "y-axis")
+        .attr("transform", "translate(" + 60 + ", 0)")
+        .call(d3.axisLeft(y).tickPadding(0))
+
+    svg.append("line")//center line
+        .attr("x1",250)
+        .attr("x2",250)
+        .attr("y1",0)
+        .attr("y2",725)
+        .attr("stroke","black")
+        .attr("stroke-opacity", 0.5)                    
+
+    d3.select("#threshold").on("input", function () { //when slider moved, call update
+        const value = +this.value; //slider value
+        d3.select("#threshold-value").text(value.toFixed(3));//fix text
+        clevelandScope(value); //update plot              
+    });
+
+    function clevelandScope(threshold) {//called when desired frequency filter is changed
+
+        const filtered = data.filter(d => d.fttl >= threshold) //update filter
+        y.domain(filtered.map(d=>d.cluster)) //update clusters
+        svg.select(".y-axis") //update y axis
+            .call(d3.axisLeft(y).tickPadding(10));
+
+        svg.selectAll(".stem") //update lines
+            .data(filtered)
+            .join("line")
+            .attr("class", "stem")
+            .attr("x1", x(0))
+            .attr("x2", d => x(d.frel))
+            .attr("y1", d => y(d.cluster) + y.bandwidth()/2)
+            .attr("y2", d => y(d.cluster) + y.bandwidth()/2)
+            .attr("stroke", "grey")
+            .attr("stroke-width", 1)
+            .attr("stroke-opacity", 0.3)//keep light
+        
+        const circles = svg.selectAll("circle")
+            .data(filtered, d => d.cluster)
+
+        circles.exit().remove(); //remove old
+
+        circles.enter() //add new
+            .append("circle")
+            .merge(circles)
+            .attr("cx", d => x(d.frel))
+            .attr("cy", d => y(d.cluster) + y.bandwidth()/2)
+            .attr("r", 3)
+            .on("mouseover", (event, d) => {//when mouse is over dot
+                tooltip.style("opacity",1)//make tooltip apparent
+                    .html(`Cluster: ${d.cluster}<br>Relative Frequency: ${d.frel}`) //show these stats
+            }).on("mousemove", (event) => {
+                tooltip.style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY + "px");
+            }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
+    }
+
+
+
+
+    //SCATTERPLOT
+    const svg2 = d3.select("#scatterplot") //plots are separate 
+    const size2 = 800
+    var zoom = 0.4 //zoom distance; changable
+    var min_chars = 2 //min chars in cluster; changable
+    filtered2 = data.filter(d=>d.fttl > 0.04) //use separate filtering
+
+    const x2 = d3.scaleLinear() //x values
+        .domain([0,zoom])
+        .range([axis,size2-axis])
+
+    const y2 = d3.scaleLinear() //y values
+        .domain([0,zoom])
+        .range([size2-axis,axis])
+
+    svg2.selectAll("circle") //make circles for all points
+        .data(filtered2)
+        .enter().append("circle")
+        .attr("cx", d => x2(d.fpl))
+        .attr("cy", d => y2(d.fen))
+        .attr("r", 3) //radius must be large to avoid issues with tooltips
+        .on("mouseover", (event, d) => {//when mouse is over dot
+            tooltip.style("opacity",1)//make tooltip apparent
+                .html(`Cluster: ${d.cluster}<br>Polish Frequency: ${d.fpl}<br>English Frequency: ${d.fen}`) //show these stats
+        }).on("mousemove", (event) => {
+            tooltip.style("left", event.pageX + 10 + "px")
+                    .style("top", event.pageY + "px");
+        }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
+
+    svg2.append("g") //x axis
+        .attr("class", "x-axis")
+        .attr("transform", "translate(0, " + 740 + ")")
+        .call(d3.axisBottom(x2))
+
+    svg2.append("g") //y axis
+        .attr("class", "y-axis")
+        .attr("transform", "translate(" + 60 + ", 0)")
+        .call(d3.axisLeft(y2))
+
+    svg2.append("line")//dividing line
+        .attr("x1",75)
+        .attr("x2",600)
+        .attr("y1",725)
+        .attr("y2",200)
+        .attr("stroke","black")
+        .attr("stroke-opacity", 0.3)  
+    
+    svg2.append("line")//legend line
+        .attr("x1",600)
+        .attr("x2",600)
+        .attr("y1",75)
+        .attr("y2",200)
+        .attr("stroke","black")
+        .attr("stroke-opacity", 0.5)  
+
+    svg2.append("line")//legend line
+        .attr("x1",725)
+        .attr("x2",600)
+        .attr("y1",200)
+        .attr("y2",200)
+        .attr("stroke","black")
+        .attr("stroke-opacity", 0.5)
+    
+    const colors = ["#ae282c", "#d47264", "#f6d6c2", "#8ec1da", "#2066a8","7e4794"]
+    var colorSet = d3.scaleQuantile() //color set
+        .domain([2,3,4,5,6,7])
+        .range(colors)
+
+    svg2.selectAll("circle").attr("fill", d => colorSet(d.len))//colors start on
+    
+    //create legend
+    svg2.append("text").attr("x",615).attr("y",90).text("# Sounds in Cluster").style("font-size", "14px")    
+    for (let i = 0; i < 6; i++) {
+        svg2.append("rect").attr("x",615).attr("y",106 + (15*i)).attr("r", 4)
+            .style("fill", colors[i]).attr("width",8).attr("height",8)
+        svg2.append("text").attr("x",635).attr("y",114 + (15*i)).text(i+2).style("font-size", "14px")
+    }
+    
+
+    const checkbox = d3.select("#coloring");//checkbox object
+    
+    checkbox.on("change", function() {//switch between color and no color
+        if (this.checked) {
+            svg2.selectAll("circle").attr("fill", d => colorSet(d.len))
+        } else {
+            d3.selectAll("circle").attr("fill", "black")
+        }
+    })
+    
+    d3.selectAll('input[name="choice"]').on("change", function() {
+        if (this.checked) {
+            zoom = this.value
+            updatePlot(); //when zoom is changed, call this
+        }
+    });
+
+    d3.selectAll('input[name="min"]').on("change", function() {
+        if (this.checked) {
+            min_chars = this.value
+            updatePlot(); //when min chars is changed, call this
+        }
+    });
+
+    function updatePlot() {
+        
+        //update data
+        if (zoom == 0.001) {
+            filtered2 = data.filter(d=>d.fpl < zoom && d.fen < zoom && d.len >= min_chars)
+        } else {//dont show lower extremes when zoomed out; very crowded
+            filtered2 = data.filter(d=>d.fttl > (0.1 * zoom) && d.fpl < zoom && d.fen < zoom
+                                     && d.len >= min_chars)
+        }
+
+        x2.domain([0,zoom])//update domains
+        y2.domain([0,zoom])
+
+        svg2.select(".x-axis") //update x axis
+            .call(d3.axisBottom(x2).tickPadding(10));
+        svg2.select(".y-axis") //update y axis
+            .call(d3.axisLeft(y2).tickPadding(10));
+
+        const circles2 = svg2.selectAll("circle")
+            .data(filtered2)
+
+        circles2.exit().remove(); //remove old
+
+        circles2.enter() //add new
+            .append("circle")
+            .merge(circles2)
+            .attr("cx", d => x2(d.fpl))
+            .attr("cy", d => y2(d.fen))
+            .attr("r", 3)
+            .on("mouseover", (event, d) => {//when mouse is over dot
+                tooltip.style("opacity",1)//make tooltip apparent
+                    .html(`Cluster: ${d.cluster}<br>Polish Frequency: ${d.fpl}<br>English Frequency: ${d.fen}`) //show these stats
+            }).on("mousemove", (event) => {
+                tooltip.style("left", event.pageX + 10 + "px")
+                        .style("top", event.pageY + "px");
+            }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
+        
+        if (zoom == 0.001) { //we get to grid level, so jittering is necessary
+            svg2.selectAll("circle")
+                .attr("cx", d => x2(d.fpl) + (30* (Math.random()-0.5)))
+                .attr("cy", d => y2(d.fen) + (30* (Math.random()-0.5)))
+        }
+
+        if (checkbox.property("checked") == true) {//recolor everything same way
+            svg2.selectAll("circle").attr("fill", d => colorSet(d.len))
+        } else {
+            d3.selectAll("circle").attr("fill", "black")
+        }
+    }
+})
