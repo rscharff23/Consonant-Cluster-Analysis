@@ -3,14 +3,14 @@ from parse_PL import remove_chars,remove_vowels, process_sentence, lng
 from convert_ipa.pl_to_ipa_dev import combine_digraphs
 import csv
 
-ipa_consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','p','r','s','ʃ','t','v','w','z','θ','ð','t͡s','d͡z','t͡ʃ','d͡ʒ','ʒ']
+ipa_consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','p','r','s','ʃ','t','v','w','z','θ','ð','ʦ','ʣ','ʧ','ʤ','ʒ']
 
 df = pd.read_csv('clusters/data_en/sentences_en.csv')
 
 clusters = {}#dict to hold clusters
 with open('clusters/data_en/ipa_sentences_en.txt','w', encoding="utf-8-sig") as ipa:
     for s in df['phonemes']:
-        s = s.replace('ts','t͡s').replace('dz','d͡z').replace('tʃ','t͡ʃ').replace('dʒ','d͡ʒ')
+        s = s.replace('ts','ʦ').replace('dz','ʣ').replace('tʃ','ʧ').replace('dʒ','ʤ')
         chars = list(s)
         combine_digraphs(chars, []) #turn ipa sentences into list of ipa chars
         remove_chars(chars, [' ','ˈ']) #remove spaces and emphasis markers to create clusters

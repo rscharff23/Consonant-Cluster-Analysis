@@ -10,9 +10,9 @@ clusters = {} #dict to contain each cluster and their number of occurences
 
 #ipa consonants present in polish
 consts = ['b','d','f','g','h','j','k','l','m','n','ŋ','ɲ','p','r','s','ɕ','ʂ','t','v','w','z',
-          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x','ɣ','d͡ʒ','t͡ʃ','ʒ','ʃ'] 
+          't͡s','d͡z','d͡ʐ','t͡ʂ','d͡ʑ','t͡ɕ','ʐ','ʑ','x','ɣ','d͡ʒ','t͡ʃ','ʒ','ʃ','ʧ','ʤ','ʦ','ʣ'] 
 
-simplified = {'d͡ʐ':'d͡ʒ','t͡ʂ':'t͡ʃ','d͡ʑ':'d͡ʒ','t͡ɕ':'t͡ʃ','ɕ':'ʃ','ʂ':'ʃ','ʐ':'ʒ','ʑ':'ʒ'}
+simplified = {'d͡ʐ':'ʤ','t͡ʂ':'ʧ','d͡ʑ':'ʤ','t͡ɕ':'ʧ','ɕ':'ʃ','ʂ':'ʃ','ʐ':'ʒ','ʑ':'ʒ','t͡s':'ʦ','d͡z':'ʣ'}
 
 
 
@@ -56,7 +56,7 @@ def process_sentence(chars, cl_dict):
 def lng(clust):
     arr = []
     for i in clust:
-        arr.append(len(i) - (2*i.count('͡')))
+        arr.append(len(i))
     return arr
 
 

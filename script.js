@@ -273,5 +273,105 @@ d3.csv("merged_clusters.csv", function(d) {
         } else {
             d3.selectAll("circle").attr("fill", "black")
         }
+
+
     }
+
+    //TREEPLOT
+    size3 = 800//weird bounding for radial trees so must adjust
+    const svg3 = d3.select("#tree_plot").attr("viewBox", [-size3/2, -size3/2, size3, size3])
+    const radius = 400
+    const strings = data.map(d => d.cluster);//convert cluster column to arrary of strings
+
+    //turn cluster strings into a tree of nodes and children
+    function buildUnicodeTreeWithAllParents(strings) {
+        const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" }); //allows ipa
+        function graphemes(str) { return Array.from(segmenter.segment(str), s => s.segment) }
+
+        const root = { name: "root", children: [] } //root node
+        const lookup = { root: root } //dict which carries each node and info about it
+
+        strings.forEach(str => { //for each cluster
+            const chars = graphemes(str) //turn cluster to array of chars
+            for (let i = 1; i <= chars.length; i++) { //iterate through chars
+                const key = chars.slice(0, i).join("") //key = first i letters
+                if (!lookup[key]) { //if key doesnt yet have dict entry
+                    const parentKey = i == 1 ? "root" : chars.slice(0, i - 1).join("")//parentkey = key-1char
+                    const node = { name: key, children: [] }//make node for key
+                    lookup[key] = node//add dict entry with key
+                    lookup[parentKey].children.push(node) //add key as child to parent
+                }
+            }
+        })
+
+        return root //finally, return root (and all other keys with it)
+    }
+
+    // convert polar to normal coordinates
+    function polarToCartesian(angle, r) {
+        return [r * Math.cos(angle - Math.PI/2), r * Math.sin(angle - Math.PI/2)]
+    }
+
+    const treeLayout = d3.tree().size([2*Math.PI, radius-100])//tree dimensions (polar)
+    const treeData = buildUnicodeTreeWithAllParents(strings);//build tree structure
+    var currentRoot = treeData; //track what the current root of the tree is
+
+    function render(rootData) {//display tree
+        svg3.selectAll("*").remove(); //clear entire plot
+        const root = d3.hierarchy(rootData); //turn tree into d3 object
+
+        // keep parent references for going up
+        root.each(d => {
+            if (d.children) d.children.forEach(c => c.parentNode = d);
+            if (d._children) d._children.forEach(c => c.parentNode = d);
+        });
+
+        treeLayout(root); //attach object to tree layout
+
+        //connecting lines
+        svg3.append("g")
+            .selectAll("line")
+            .data(root.descendants().slice(1))//attach all immediate children and their parent
+            .join("line")
+            .attr("x1", d => polarToCartesian(d.parent.x, d.parent.y)[0])
+            .attr("y1", d => polarToCartesian(d.parent.x, d.parent.y)[1])
+            .attr("x2", d => polarToCartesian(d.x, d.y)[0])
+            .attr("y2", d => polarToCartesian(d.x, d.y)[1])
+            .attr("stroke", "grey");
+
+        //nodes
+        const nodes = svg3.append("g")
+            .selectAll("g")
+            .data(root.descendants())//attach node to each tree node
+            .join("g")
+            .attr("transform", d => {
+                const [x, y] = polarToCartesian(d.x, d.y);
+                return `translate(${x},${y})`;
+            });
+
+        nodes.append("circle")//put a circle on each node
+            .attr("r", 4)
+            .attr("fill", d => d._children ? "orange" : "steelblue") //change color if there are hidden
+            .on("click", (event, d) => {//when clicked
+                event.stopPropagation();
+
+                
+                if (d.data == currentRoot) { //if clicked root, reset tree
+                    render(treeData);
+                } else {//else reroot at clicked node
+                    currentRoot = d.data; 
+                    render(currentRoot);
+                }
+
+
+            });
+
+        nodes.append("text")
+            .attr("dy", -8) //put cluster text 8 px above the node
+            .text(d => d.data.name);
+    }
+
+    render(treeData);
+
+
 })
