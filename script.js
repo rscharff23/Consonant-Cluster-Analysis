@@ -41,7 +41,7 @@ d3.csv("merged_clusters.csv", function(d) {
                 .html(`Cluster: ${d.cluster}<br>Relative Frequency: ${d.frel}`) //show these stats
         }).on("mousemove", (event) => {
             tooltip.style("left", event.pageX + 10 + "px")
-                    .style("top", event.pageY + "px");
+                    .style("top", event.pageY + "px")
         }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
 
     svg.selectAll(".stem") //tracking lines
@@ -75,17 +75,17 @@ d3.csv("merged_clusters.csv", function(d) {
         .attr("stroke-opacity", 0.5)                    
 
     d3.select("#threshold").on("input", function () { //when slider moved, call update
-        const value = +this.value; //slider value
-        d3.select("#threshold-value").text(value.toFixed(3));//fix text
-        clevelandScope(value); //update plot              
-    });
+        const value = +this.value //slider value
+        d3.select("#threshold-value").text(value.toFixed(3))//fix text
+        clevelandScope(value) //update plot              
+    })
 
     function clevelandScope(threshold) {//called when desired frequency filter is changed
 
         const filtered = data.filter(d => d.fttl >= threshold) //update filter
         y.domain(filtered.map(d=>d.cluster)) //update clusters
         svg.select(".y-axis") //update y axis
-            .call(d3.axisLeft(y).tickPadding(10));
+            .call(d3.axisLeft(y).tickPadding(10))
 
         svg.selectAll(".stem") //update lines
             .data(filtered)
@@ -102,7 +102,7 @@ d3.csv("merged_clusters.csv", function(d) {
         const circles = svg.selectAll("circle")
             .data(filtered, d => d.cluster)
 
-        circles.exit().remove(); //remove old
+        circles.exit().remove() //remove old
 
         circles.enter() //add new
             .append("circle")
@@ -115,7 +115,7 @@ d3.csv("merged_clusters.csv", function(d) {
                     .html(`Cluster: ${d.cluster}<br>Relative Frequency: ${d.frel}`) //show these stats
             }).on("mousemove", (event) => {
                 tooltip.style("left", event.pageX + 10 + "px")
-                        .style("top", event.pageY + "px");
+                        .style("top", event.pageY + "px")
             }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
     }
 
@@ -148,7 +148,7 @@ d3.csv("merged_clusters.csv", function(d) {
                 .html(`Cluster: ${d.cluster}<br>Polish Frequency: ${d.fpl}<br>English Frequency: ${d.fen}`) //show these stats
         }).on("mousemove", (event) => {
             tooltip.style("left", event.pageX + 10 + "px")
-                    .style("top", event.pageY + "px");
+                    .style("top", event.pageY + "px")
         }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
 
     svg2.append("g") //x axis
@@ -185,7 +185,7 @@ d3.csv("merged_clusters.csv", function(d) {
         .attr("stroke","black")
         .attr("stroke-opacity", 0.5)
     
-    const colors = ["#ae282c", "#d47264", "#f6d6c2", "#8ec1da", "#2066a8","7e4794"]
+    const colors = ["#ae282c", "#d47264", "#f6d6c2", "#8ec1da", "#2066a8","#7e4794"]
     var colorSet = d3.scaleQuantile() //color set
         .domain([2,3,4,5,6,7])
         .range(colors)
@@ -201,7 +201,7 @@ d3.csv("merged_clusters.csv", function(d) {
     }
     
 
-    const checkbox = d3.select("#coloring");//checkbox object
+    const checkbox = d3.select("#coloring")//checkbox object
     
     checkbox.on("change", function() {//switch between color and no color
         if (this.checked) {
@@ -214,16 +214,16 @@ d3.csv("merged_clusters.csv", function(d) {
     d3.selectAll('input[name="choice"]').on("change", function() {
         if (this.checked) {
             zoom = this.value
-            updatePlot(); //when zoom is changed, call this
+            updatePlot() //when zoom is changed, call this
         }
-    });
+    })
 
     d3.selectAll('input[name="min"]').on("change", function() {
         if (this.checked) {
             min_chars = this.value
-            updatePlot(); //when min chars is changed, call this
+            updatePlot() //when min chars is changed, call this
         }
-    });
+    })
 
     function updatePlot() {
         
@@ -239,14 +239,14 @@ d3.csv("merged_clusters.csv", function(d) {
         y2.domain([0,zoom])
 
         svg2.select(".x-axis") //update x axis
-            .call(d3.axisBottom(x2).tickPadding(10));
+            .call(d3.axisBottom(x2).tickPadding(10))
         svg2.select(".y-axis") //update y axis
-            .call(d3.axisLeft(y2).tickPadding(10));
+            .call(d3.axisLeft(y2).tickPadding(10))
 
         const circles2 = svg2.selectAll("circle")
             .data(filtered2)
 
-        circles2.exit().remove(); //remove old
+        circles2.exit().remove() //remove old
 
         circles2.enter() //add new
             .append("circle")
@@ -259,7 +259,7 @@ d3.csv("merged_clusters.csv", function(d) {
                     .html(`Cluster: ${d.cluster}<br>Polish Frequency: ${d.fpl}<br>English Frequency: ${d.fen}`) //show these stats
             }).on("mousemove", (event) => {
                 tooltip.style("left", event.pageX + 10 + "px")
-                        .style("top", event.pageY + "px");
+                        .style("top", event.pageY + "px")
             }).on("mouseout", () => tooltip.style("opacity",0))//make transparent when mouse moves
         
         if (zoom == 0.001) { //we get to grid level, so jittering is necessary
@@ -281,27 +281,29 @@ d3.csv("merged_clusters.csv", function(d) {
     size3 = 800//weird bounding for radial trees so must adjust
     const svg3 = d3.select("#tree_plot").attr("viewBox", [-size3/2, -size3/2, size3, size3])
     const radius = 400
-    const strings = data.map(d => d.cluster);//convert cluster column to arrary of strings
+
 
     //turn cluster strings into a tree of nodes and children
-    function buildUnicodeTreeWithAllParents(strings) {
-        const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" }); //allows ipa
+    function buildUnicodeTreeWithAllParents(data) {
+        const segmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" }) //allows ipa
         function graphemes(str) { return Array.from(segmenter.segment(str), s => s.segment) }
 
         const root = { name: "root", children: [] } //root node
         const lookup = { root: root } //dict which carries each node and info about it
 
-        strings.forEach(str => { //for each cluster
-            const chars = graphemes(str) //turn cluster to array of chars
+        data.forEach(row => { //for each cluster
+            const chars = graphemes(row.cluster) //turn cluster to array of chars
             for (let i = 1; i <= chars.length; i++) { //iterate through chars
                 const key = chars.slice(0, i).join("") //key = first i letters
                 if (!lookup[key]) { //if key doesnt yet have dict entry
                     const parentKey = i == 1 ? "root" : chars.slice(0, i - 1).join("")//parentkey = key-1char
-                    const node = { name: key, children: [] }//make node for key
+                    const node = { name: key, children: []}//make node for key
                     lookup[key] = node//add dict entry with key
                     lookup[parentKey].children.push(node) //add key as child to parent
+                    
                 }
             }
+            
         })
 
         return root //finally, return root (and all other keys with it)
@@ -312,21 +314,32 @@ d3.csv("merged_clusters.csv", function(d) {
         return [r * Math.cos(angle - Math.PI/2), r * Math.sin(angle - Math.PI/2)]
     }
 
+    const colorSet2 = d3.scaleSequential()//red to blue gradient
+        .domain([0,1])
+        .interpolator(d3.interpolateRgb("red","blue"))
+
     const treeLayout = d3.tree().size([2*Math.PI, radius-100])//tree dimensions (polar)
-    const treeData = buildUnicodeTreeWithAllParents(strings);//build tree structure
-    var currentRoot = treeData; //track what the current root of the tree is
+    const treeData = buildUnicodeTreeWithAllParents(data)//build tree structure
+    var currentRoot = treeData //track what the current root of the tree is
+    var maxDepth = 0
 
     function render(rootData) {//display tree
-        svg3.selectAll("*").remove(); //clear entire plot
-        const root = d3.hierarchy(rootData); //turn tree into d3 object
+        svg3.selectAll("*").remove() //clear entire plot
+        const root = d3.hierarchy(rootData) //turn tree into d3 object
 
-        // keep parent references for going up
+
+        if (root.children?.length > 12) {maxDepth = 0}//if too many children, cannot handle so many layers
+        else {maxDepth = 2}
+
         root.each(d => {
-            if (d.children) d.children.forEach(c => c.parentNode = d);
-            if (d._children) d._children.forEach(c => c.parentNode = d);
-        });
+            if (d.depth > maxDepth) {
+                d._children = d.children// store children that are too deep to show
+                d.children = null// hide them from this render
+            }
+        })
 
-        treeLayout(root); //attach object to tree layout
+
+        treeLayout(root) //attach object to tree layout
 
         //connecting lines
         svg3.append("g")
@@ -337,7 +350,7 @@ d3.csv("merged_clusters.csv", function(d) {
             .attr("y1", d => polarToCartesian(d.parent.x, d.parent.y)[1])
             .attr("x2", d => polarToCartesian(d.x, d.y)[0])
             .attr("y2", d => polarToCartesian(d.x, d.y)[1])
-            .attr("stroke", "grey");
+            .attr("stroke", "grey")
 
         //nodes
         const nodes = svg3.append("g")
@@ -345,33 +358,37 @@ d3.csv("merged_clusters.csv", function(d) {
             .data(root.descendants())//attach node to each tree node
             .join("g")
             .attr("transform", d => {
-                const [x, y] = polarToCartesian(d.x, d.y);
-                return `translate(${x},${y})`;
-            });
+                const [x, y] = polarToCartesian(d.x, d.y)
+                return `translate(${x},${y})`
+            })
 
         nodes.append("circle")//put a circle on each node
             .attr("r", 4)
-            .attr("fill", d => d._children ? "orange" : "steelblue") //change color if there are hidden
             .on("click", (event, d) => {//when clicked
-                event.stopPropagation();
+                event.stopPropagation() //prevent additional clicks
 
                 
                 if (d.data == currentRoot) { //if clicked root, reset tree
-                    render(treeData);
+                    render(treeData)
                 } else {//else reroot at clicked node
-                    currentRoot = d.data; 
-                    render(currentRoot);
+                    currentRoot = d.data
+                    render(currentRoot)
                 }
 
 
-            });
+            })
+
+        nodes.selectAll("circle")
+            .attr("fill", d => {
+                const row = data.find(r => r.cluster == d.data.name)//match names to use csv row
+                if (!row) return "black" //for single letters which don't have a row
+                return colorSet2(row.frel) //color by relative frequency from that row
+            })
 
         nodes.append("text")
             .attr("dy", -8) //put cluster text 8 px above the node
-            .text(d => d.data.name);
+            .text(d => d.data.name)
     }
 
-    render(treeData);
-
-
+    render(treeData) //render tree the first time
 })
