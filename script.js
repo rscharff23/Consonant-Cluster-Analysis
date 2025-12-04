@@ -388,7 +388,17 @@ d3.csv("merged_clusters.csv", function(d) {
         nodes.append("text")
             .attr("dy", -8) //put cluster text 8 px above the node
             .text(d => d.data.name)
+
+        //legend
+        svg3.append("rect").attr("x",300).attr("y",-300).attr("r", 4)
+            .style("fill", "red").attr("width",8).attr("height",8)
+        svg3.append("text").attr("x",320).attr("y",-291).text("More English").style("font-size", "14px")
+
+        svg3.append("rect").attr("x",300).attr("y",-280).attr("r", 4)
+            .style("fill", "blue").attr("width",8).attr("height",8)
+        svg3.append("text").attr("x",320).attr("y",-271).text("More Polish").style("font-size", "14px")
     }
+    
 
     render(treeData) //render tree the first time
 })
