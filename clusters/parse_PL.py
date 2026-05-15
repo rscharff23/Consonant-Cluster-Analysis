@@ -1,8 +1,7 @@
 from conllu import parse_incr
 from io import open
 import csv
-from convert_ipa.pl_ipa import ipa_polish # work to remove this
-from convert_ipa.pl_to_ipa_dev import combine_digraphs
+from convert_ipa.pl_ipa import ipa_polish 
 import pandas as pd
 
 sentences = [] #contains full sentences after parsing 
@@ -58,6 +57,24 @@ def lng(clust):
     for i in clust:
         arr.append(len(i))
     return arr
+
+#combine digraphs (rz,cz,sz,dż,dź,ch,si,ci,dzi,zi) to one character
+def combine_digraphs(chars,digraphs):
+    chars.append('.') #fixes bounding problem of some sentences not ending with period
+    i = 0
+    while i < len(chars)-1:
+        if chars[i] + chars[i+1] in digraphs or chars[i+1] == '͡': #check if next two letters are a digraph
+            if chars[i+1] == '͡':
+                chars[i] = chars[i]+chars[i+1]+chars[i+2]
+                chars.pop(i+2)
+            else:
+                if chars[i+1] + chars[i+2] == 'zi':
+                    chars[i] = 'dzi' #special case for dzi
+                    chars.pop(i+2)#and remove i
+                else:           
+                    chars[i] = chars[i]+chars[i+1] #if so, combine them into one
+            chars.pop(i+1) #and remove next
+        i += 1
 
 
 ### PROCESSING

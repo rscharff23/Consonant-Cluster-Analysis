@@ -8,6 +8,4 @@ Credits/Uznania:
 Alina Wróblewska, 2018. *Extended and Enhanced Polish Dependency Bank in Universal Dependencies Format.* 
 In de Marneffe, Marie-Catherine and Lynn, Teresa and Schuster, Sebastian (Ed.) *Proceedings of the Second Workshop on Universal Dependencies (UDW 2018)* (pp. 173-182). Association for Computational Linguistics
 
-TODO: refine visualizations, dashboard creation
-
-Parsing is complete, but uses another implementation to put polish sentence into ipa. In the future, with more time, create own implementation. 
+TODO: remove own implementation of parsing for now, make database with word frequency in default form, refine visualizations, dashboard creation
